@@ -8,6 +8,7 @@ import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.database.CharacterDao
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.paging.CharactersPagingDataSource
+import com.nunop.rickandmorty.repository.location.LocationRepository
 import kotlinx.coroutines.flow.Flow
 
 class CharacterRepositoryImpl(

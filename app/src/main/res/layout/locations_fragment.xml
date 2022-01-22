@@ -14,14 +14,6 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		tools:listitem="@layout/character_item_list" />
-	
-	<TextView
-		android:id="@+id/textView"
-		android:layout_width="66dp"
-		android:layout_height="11dp"
-		android:text="Locations"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent" />
+		tools:listitem="@layout/location_item_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

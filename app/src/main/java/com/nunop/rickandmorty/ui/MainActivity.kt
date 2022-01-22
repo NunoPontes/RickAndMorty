@@ -14,18 +14,23 @@ import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.paging.CharactersPagingDataSource
+import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
 import com.nunop.rickandmorty.databinding.ActivityMainBinding
 import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
 import com.nunop.rickandmorty.repository.episode.EpisodeRepositoryImpl
+import com.nunop.rickandmorty.repository.location.LocationRepositoryImpl
 import com.nunop.rickandmorty.ui.characters.CharactersViewModel
 import com.nunop.rickandmorty.ui.characters.CharactersViewModelProviderFactory
 import com.nunop.rickandmorty.ui.episodes.EpisodesViewModel
 import com.nunop.rickandmorty.ui.episodes.EpisodesViewModelProviderFactory
+import com.nunop.rickandmorty.ui.locations.LocationsViewModel
+import com.nunop.rickandmorty.ui.locations.LocationsViewModelProviderFactory
 
 @ExperimentalPagingApi
 class MainActivity : AppCompatActivity() {
 
     lateinit var mCharactersViewModel: CharactersViewModel
+    lateinit var mLocationsViewModel: LocationsViewModel
     lateinit var mEpisodesViewModel: EpisodesViewModel
 
     private lateinit var binding: ActivityMainBinding
@@ -40,10 +45,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val databaseInstance = Database.getInstance(this)
-        val dao = databaseInstance.characterDao
+        val daoCharacter = databaseInstance.characterDao
+        val daoLocation = databaseInstance.locationDao
+
 
         val repositoryCharacter =
-            CharacterRepositoryImpl(databaseInstance.characterDao, CharactersPagingDataSource(dao))
+            CharacterRepositoryImpl(
+                databaseInstance.characterDao,
+                CharactersPagingDataSource(daoCharacter)
+            )
         val viewModelCharactersProviderFactory =
             CharactersViewModelProviderFactory(repositoryCharacter)
         mCharactersViewModel =
@@ -61,103 +71,23 @@ class MainActivity : AppCompatActivity() {
         mEpisodesViewModel =
             ViewModelProvider(this, viewModelEpisodesProviderFactory)[EpisodesViewModel::class.java]
 
+
+        val repositoryLocation = LocationRepositoryImpl(
+            databaseInstance.locationDao,
+            LocationsPagingDataSource(daoLocation)
+        )
+        val viewModelLocationsProviderFactory =
+            LocationsViewModelProviderFactory(repositoryLocation)
+        mLocationsViewModel =
+            ViewModelProvider(
+                this,
+                viewModelLocationsProviderFactory
+            )[LocationsViewModel::class.java]
+
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }
 
-//        val characters = listOf(
-//            Character(
-//                id = 1,
-//                name = "Ricky",
-//                status = "Alive",
-//                originLocationId = 1,
-//                currentLocationId = 2
-//            ),
-//            Character(
-//                id = 2,
-//                name = "Morty",
-//                status = "Alive",
-//                originLocationId = 1,
-//                currentLocationId = 2
-//            ),
-//            Character(
-//                id = 3,
-//                name = "Aquaman",
-//                status = "Dead",
-//                originLocationId = 3,
-//                currentLocationId = 3
-//            )
-//        )
-//
-//        val locations = listOf(
-//            Location(
-//                id = 1,
-//                name = "Earth",
-//                type = "Grass"
-//            ),
-//            Location(
-//                id = 2,
-//                name = "Mars",
-//                type = "Dirt"
-//            ),
-//            Location(
-//                id = 3,
-//                name = "Sea",
-//                type = "Water"
-//            )
-//        )
-//
-//        val episodes = listOf(
-//            Episode(
-//                id = 1,
-//                name = "S01E01",
-//                air_date = "Grass"
-//            ),
-//            Episode(
-//                id = 2,
-//                name = "S01E02",
-//                air_date = "Dirt"
-//            ),
-//            Episode(
-//                id = 3,
-//                name = "S01E03",
-//                air_date = "Water"
-//            )
-//        )
-//
-//        val characterEpisodeRelations = listOf(
-//            CharacterEpisodeCrossRef(
-//                characterId = 1,
-//                episodeId = 1
-//            ),
-//            CharacterEpisodeCrossRef(
-//                characterId = 1,
-//                episodeId = 2
-//            ),
-//            CharacterEpisodeCrossRef(
-//                characterId = 1,
-//                episodeId = 3
-//            ),
-//            CharacterEpisodeCrossRef(
-//                characterId = 2,
-//                episodeId = 1
-//            ),
-//            CharacterEpisodeCrossRef(
-//                characterId = 2,
-//                episodeId = 2
-//            ),
-//            CharacterEpisodeCrossRef(
-//                characterId = 3,
-//                episodeId = 1
-//            )
-//        )
-
-//        lifecycleScope.launch {
-//            characters.forEach { dao.insertCharacter(it) }
-//            locations.forEach { dao.insertLocation(it) }
-//            episodes.forEach { dao.insertEpisode(it) }
-//            characterEpisodeRelations.forEach { dao.insertCharacterEpisodeCrossRef(it) }
-//        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

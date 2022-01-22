@@ -22,7 +22,7 @@ interface LocationDao {
 
     @Transaction //To ensure this happens atomically
     @Query("SELECT * FROM location")
-    fun getLocations(): LiveData<List<Location>>
+    fun getLocations(): Flow<List<Location>>
 
 
     @Transaction //To ensure this happens atomically
