@@ -4,17 +4,30 @@ import android.util.Log
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
+import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.database.entities.Location
 
-fun ResultCharacter.toCharacter():com.nunop.rickandmorty.data.database.entities.Character  {
-    return com.nunop.rickandmorty.data.database.entities.Character(
+fun ResultCharacter.toCharacter(): Character {
+    return Character(
         id = this.id,
         name = this.name,
         status = this.status,
+        gender = this.gender,
+        species = this.species,
+        type = this.type,
+        image = this.image,
         originLocationId = this.origin?.url?.getLocationId(),
         currentLocationId = this.location?.url?.getLocationId()
     )
+}
+
+fun List<ResultCharacter>.toListCharacters(): List<Character> {
+    val listCharacter: MutableList<Character> = mutableListOf()
+    forEach {
+        listCharacter.add(it.toCharacter())
+    }
+    return listCharacter
 }
 
 fun List<ResultEpisode>.toListEpisodes(): List<Episode> {
@@ -37,11 +50,11 @@ fun ResultLocation.toLocation() = Location(
     type = type
 )
 
-fun String.getLocationId(): Int?{
+fun String.getLocationId(): Int? {
     return try {
         this.substringAfterLast("https://rickandmortyapi.com/api/location/").toInt()
-    } catch (e: Exception){
-        Log.e("AAAAAAAAA",this)
+    } catch (e: Exception) {
+        Log.e("AAAAAAAAA", this)
         null
     }
 }

@@ -4,13 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.nunop.rickandmorty.api.RetrofitInstance
-import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
-import com.nunop.rickandmorty.data.database.CharacterDao
 import com.nunop.rickandmorty.data.database.LocationDao
-import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.Location
-import com.nunop.rickandmorty.data.paging.CharactersPagingDataSource
 import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
 import kotlinx.coroutines.flow.Flow
 

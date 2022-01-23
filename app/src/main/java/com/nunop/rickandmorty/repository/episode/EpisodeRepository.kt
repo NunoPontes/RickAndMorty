@@ -6,8 +6,6 @@ import com.nunop.rickandmorty.data.database.entities.Episode
 import kotlinx.coroutines.flow.Flow
 
 interface EpisodeRepository {
-//    fun postsOfSubreddit(subReddit: String, pageSize: Int): Flow<PagingData<ResultEpisode>>
-
     @ExperimentalPagingApi
     fun getEpisodesFromMediator(): Flow<PagingData<Episode>>
 }

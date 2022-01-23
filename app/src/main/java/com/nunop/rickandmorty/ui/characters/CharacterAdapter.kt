@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
+import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharacterItemListBinding
 
 class CharacterAdapter(private val context: Context?) :
-    PagingDataAdapter<ResultCharacter, CharacterAdapter.CharacterViewHolder>(
+    PagingDataAdapter<Character, CharacterAdapter.CharacterViewHolder>(
         CharacterComparator
     ) {
 
@@ -27,8 +28,10 @@ class CharacterAdapter(private val context: Context?) :
         getItem(position)?.let { holder.bind(it) }
     }
 
-    inner class CharacterViewHolder(private val binding: CharacterItemListBinding,
-    private val context: Context?) :
+    inner class CharacterViewHolder(
+        private val binding: CharacterItemListBinding,
+        private val context: Context?
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
@@ -40,7 +43,7 @@ class CharacterAdapter(private val context: Context?) :
 //            }
         }
 
-        fun bind(item: ResultCharacter) = binding.apply {
+        fun bind(item: Character) = binding.apply {
             tvName.text = item.name
             tvGender.text = item.gender
             tvSpecies.text = item.species
@@ -55,16 +58,16 @@ class CharacterAdapter(private val context: Context?) :
     }
 
     object CharacterComparator :
-        DiffUtil.ItemCallback<ResultCharacter>() {
+        DiffUtil.ItemCallback<Character>() {
         override fun areItemsTheSame(
-            oldItem: ResultCharacter,
-            newItem: ResultCharacter
+            oldItem: Character,
+            newItem: Character
         ) =
             oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: ResultCharacter,
-            newItem: ResultCharacter
+            oldItem: Character,
+            newItem: Character
         ) =
             oldItem == newItem
     }

@@ -16,16 +16,6 @@ class EpisodeRepositoryImpl(
     private val db: Database
 ) : EpisodeRepository {
 
-
-//    @OptIn(ExperimentalPagingApi::class)
-//    override fun postsOfSubreddit(subReddit: String, pageSize: Int) = Pager(
-//        config = PagingConfig(pageSize),
-//        remoteMediator = EpisodePageKeyedRemoteMediator(db, RetrofitInstance.api)
-//    ) {
-//        db.posts().postsBySubreddit(subReddit)
-//    }.flow
-
-
     @ExperimentalPagingApi
     override fun getEpisodesFromMediator(): Flow<PagingData<Episode>> {
         val pagingSourceFactory = { db.episodeDao.getEpisodesPaged() }

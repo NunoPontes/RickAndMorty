@@ -1,34 +1,37 @@
 package com.nunop.rickandmorty.repository.character
 
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.nunop.rickandmorty.api.RetrofitInstance
-import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
-import com.nunop.rickandmorty.data.database.CharacterDao
+import com.nunop.rickandmorty.api.RickAndMortyAPI
+import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Character
-import com.nunop.rickandmorty.data.paging.CharactersPagingDataSource
-import com.nunop.rickandmorty.repository.location.LocationRepository
+import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
+import com.nunop.rickandmorty.utils.Constants
 import kotlinx.coroutines.flow.Flow
 
 class CharacterRepositoryImpl(
-    private val characterDao: CharacterDao,
-    private val dataSource: CharactersPagingDataSource
-): CharacterRepository {
+    private val api: RickAndMortyAPI,
+    private val db: Database
+) : CharacterRepository {
 
-    override suspend fun getCharacters(pageNumber: Int) = RetrofitInstance.api.getCharacters(pageNumber)
 
-    override fun getAllCharactersDao() = characterDao.getCharacters()
+    @ExperimentalPagingApi
+    override fun getCharactersFromMediator(): Flow<PagingData<Character>> {
+        val pagingSourceFactory = { db.characterDao.getCharactersPaged() }
 
-    override suspend fun insertCharacter(character: Character) = characterDao.insertCharacter(character)
-
-    override suspend fun getAllCharacters(): Flow<PagingData<ResultCharacter>> = Pager(
-        config = PagingConfig(pageSize = 20, prefetchDistance = 2),
-        pagingSourceFactory = { dataSource }
-    ).flow
-
-//    suspend fun getCharacters() {
-//        val characters = getCharacters(1)
-//        characters.
-//    }
+        return Pager(
+            config = PagingConfig(
+                pageSize = Constants.PAGE_SIZE,
+                maxSize = Constants.PAGE_SIZE + (Constants.PAGE_SIZE * 2),
+                enablePlaceholders = false,
+            ),
+            remoteMediator = CharacterRemoteMediator(
+                api,
+                db
+            ),
+            pagingSourceFactory = pagingSourceFactory
+        ).flow
+    }
 }

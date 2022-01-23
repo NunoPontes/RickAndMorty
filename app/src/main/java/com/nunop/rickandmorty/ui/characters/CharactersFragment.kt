@@ -10,12 +10,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import com.nunop.rickandmorty.databinding.CharactersFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
+import com.nunop.rickandmorty.ui.episodes.EpisodeAdapter
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalPagingApi
 class CharactersFragment : Fragment() {
-//Uses paging 3 and saves on the DB (but does not use that data)
+    //Uses paging 3 and saves on the DB and uses it using a remote meidator that handles data
+    // from api and db
     private var _binding: CharactersFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -33,20 +35,18 @@ class CharactersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mViewModel = (activity as MainActivity).mCharactersViewModel
 
-        mViewModel.allCharacters.observe(viewLifecycleOwner) { characters ->
-            Log.d("Teste", characters.toString())
-        }
-
         val adapter = CharacterAdapter(context)
-
-        launchOnLifecycleScope {
-            mViewModel.charactersFlow.collectLatest { adapter.submitData(it) }
-        }
 
         binding.charactersList.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(adapter),
             footer = PagingLoadStateAdapter(adapter)
         )
+
+        launchOnLifecycleScope {
+            mViewModel.charactersFlow.collectLatest {
+                adapter.submitData(it)
+            }
+        }
 
     }
 

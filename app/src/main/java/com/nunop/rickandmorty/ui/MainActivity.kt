@@ -13,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.data.database.Database
-import com.nunop.rickandmorty.data.paging.CharactersPagingDataSource
+import com.nunop.rickandmorty.data.database.LocationDao
 import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
 import com.nunop.rickandmorty.databinding.ActivityMainBinding
 import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
@@ -34,8 +34,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var mEpisodesViewModel: EpisodesViewModel
 
     private lateinit var binding: ActivityMainBinding
-//    private var currentNavController: LiveData<NavController>? = null
-//    private var appBarConfiguration: AppBarConfiguration? = null
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -45,33 +43,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val databaseInstance = Database.getInstance(this)
-        val daoCharacter = databaseInstance.characterDao
         val daoLocation = databaseInstance.locationDao
 
 
-        val repositoryCharacter =
-            CharacterRepositoryImpl(
-                databaseInstance.characterDao,
-                CharactersPagingDataSource(daoCharacter)
-            )
-        val viewModelCharactersProviderFactory =
-            CharactersViewModelProviderFactory(repositoryCharacter)
-        mCharactersViewModel =
-            ViewModelProvider(
-                this,
-                viewModelCharactersProviderFactory
-            )[CharactersViewModel::class.java]
+        characterViewModel()
 
 
-        val repositoryEpisode = EpisodeRepositoryImpl(
-            RetrofitInstance.api, Database.getInstance
-                (this)
-        )
-        val viewModelEpisodesProviderFactory = EpisodesViewModelProviderFactory(repositoryEpisode)
-        mEpisodesViewModel =
-            ViewModelProvider(this, viewModelEpisodesProviderFactory)[EpisodesViewModel::class.java]
+        episodeViewModel()
 
 
+        locationViewModel(databaseInstance, daoLocation)
+
+        if (savedInstanceState == null) {
+            setupBottomNavigationBar()
+        }
+
+    }
+
+    private fun locationViewModel(
+        databaseInstance: Database,
+        daoLocation: LocationDao
+    ) {
         val repositoryLocation = LocationRepositoryImpl(
             databaseInstance.locationDao,
             LocationsPagingDataSource(daoLocation)
@@ -83,11 +75,31 @@ class MainActivity : AppCompatActivity() {
                 this,
                 viewModelLocationsProviderFactory
             )[LocationsViewModel::class.java]
+    }
 
-        if (savedInstanceState == null) {
-            setupBottomNavigationBar()
-        }
+    private fun episodeViewModel() {
+        val repositoryEpisode = EpisodeRepositoryImpl(
+            RetrofitInstance.api, Database.getInstance
+                (this)
+        )
+        val viewModelEpisodesProviderFactory = EpisodesViewModelProviderFactory(repositoryEpisode)
+        mEpisodesViewModel =
+            ViewModelProvider(this, viewModelEpisodesProviderFactory)[EpisodesViewModel::class.java]
+    }
 
+    private fun characterViewModel() {
+        val repositoryCharacter =
+            CharacterRepositoryImpl(
+                RetrofitInstance.api, Database.getInstance
+                    (this)
+            )
+        val viewModelCharactersProviderFactory =
+            CharactersViewModelProviderFactory(repositoryCharacter)
+        mCharactersViewModel =
+            ViewModelProvider(
+                this,
+                viewModelCharactersProviderFactory
+            )[CharactersViewModel::class.java]
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

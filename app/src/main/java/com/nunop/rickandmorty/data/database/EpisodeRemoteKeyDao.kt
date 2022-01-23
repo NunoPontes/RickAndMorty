@@ -4,7 +4,7 @@ import androidx.room.*
 import com.nunop.rickandmorty.data.database.entities.EpisodeRemoteKey
 
 @Dao
-interface RemoteKeyDao {
+interface EpisodeRemoteKeyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteKey: List<EpisodeRemoteKey>)

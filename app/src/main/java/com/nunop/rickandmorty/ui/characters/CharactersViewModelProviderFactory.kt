@@ -2,8 +2,10 @@ package com.nunop.rickandmorty.ui.characters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.ExperimentalPagingApi
 import com.nunop.rickandmorty.repository.character.CharacterRepository
 
+@ExperimentalPagingApi
 class CharactersViewModelProviderFactory(private val repository: CharacterRepository) :
     ViewModelProvider.Factory {
 
