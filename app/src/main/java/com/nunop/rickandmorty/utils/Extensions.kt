@@ -1,5 +1,10 @@
 package com.nunop.rickandmorty.utils
 
+import android.os.Bundle
+import androidx.annotation.IdRes
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.Navigator
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
@@ -56,5 +61,21 @@ fun String.getLocationId(): Int? {
     } catch (e: Exception) {
         Timber.e(e)
         null
+    }
+}
+
+/**
+ * Protection against illegal state exceptions
+ */
+fun NavController.navigateSafe(
+    @IdRes resId: Int,
+    args: Bundle? = null,
+    navOptions: NavOptions? = null,
+    navExtras: Navigator.Extras? = null
+) {
+    try {
+        navigate(resId, args, navOptions, navExtras)
+    } catch (e: Exception) {
+        Timber.e(e.message ?: "Exception")
     }
 }

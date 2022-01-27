@@ -2,6 +2,7 @@ package com.nunop.rickandmorty.ui.characters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +11,10 @@ import com.bumptech.glide.Glide
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharacterItemListBinding
 
-class CharacterAdapter(private val context: Context?) :
+class CharacterAdapter(
+    private val context: Context?,
+    private val characterClickListener: OnCharacterClickListener
+) :
     PagingDataAdapter<Character, CharacterAdapter.CharacterViewHolder>(
         CharacterComparator
     ) {
@@ -20,7 +24,8 @@ class CharacterAdapter(private val context: Context?) :
             CharacterItemListBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
-            context
+            context,
+            characterClickListener
         )
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
@@ -29,17 +34,13 @@ class CharacterAdapter(private val context: Context?) :
 
     inner class CharacterViewHolder(
         private val binding: CharacterItemListBinding,
-        private val context: Context?
+        private val context: Context?,
+        private val characterClickListener: OnCharacterClickListener
     ) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
         init {
-//            itemView.setOnClickListener {
-//                characterClickListener?.onCharacterClicked(
-//                    binding,
-//                    getItem(absoluteAdapterPosition) as com.nunop.rickandmorty.data.database.entities.Character
-//                )
-//            }
+            binding.root.setOnClickListener(this)
         }
 
         fun bind(item: Character) = binding.apply {
@@ -54,6 +55,14 @@ class CharacterAdapter(private val context: Context?) :
             }
 
         }
+
+        override fun onClick(p0: View?) {
+            characterClickListener.onCharacterClick(getItem(bindingAdapterPosition) as Character)
+        }
+    }
+
+    interface OnCharacterClickListener {
+        fun onCharacterClick(character: Character)
     }
 
     object CharacterComparator :
