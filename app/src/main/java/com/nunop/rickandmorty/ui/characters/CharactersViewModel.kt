@@ -1,6 +1,5 @@
 package com.nunop.rickandmorty.ui.characters
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -10,6 +9,7 @@ import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.repository.character.CharacterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalPagingApi
 class CharactersViewModel(
@@ -39,7 +39,7 @@ class CharactersViewModel(
                 val result = execute()
                 onSuccess(result)
             } catch (ex: Exception) {
-                Log.e("AAAAA", ex.toString())
+                Timber.e(ex)
             }
         }
     }

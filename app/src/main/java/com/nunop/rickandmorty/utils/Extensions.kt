@@ -1,12 +1,12 @@
 package com.nunop.rickandmorty.utils
 
-import android.util.Log
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.database.entities.Location
+import timber.log.Timber
 
 fun ResultCharacter.toCharacter(): Character {
     return Character(
@@ -54,7 +54,7 @@ fun String.getLocationId(): Int? {
     return try {
         this.substringAfterLast("https://rickandmortyapi.com/api/location/").toInt()
     } catch (e: Exception) {
-        Log.e("AAAAAAAAA", this)
+        Timber.e(e)
         null
     }
 }

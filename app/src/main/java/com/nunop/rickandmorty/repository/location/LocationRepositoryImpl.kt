@@ -13,9 +13,10 @@ import kotlinx.coroutines.flow.Flow
 class LocationRepositoryImpl(
     private val locationDao: LocationDao,
     private val dataSource: LocationsPagingDataSource
-): LocationRepository {
+) : LocationRepository {
 
-    override suspend fun getLocations(pageNumber: Int) = RetrofitInstance.api.getLocations(pageNumber)
+    override suspend fun getLocations(pageNumber: Int) =
+        RetrofitInstance.api.getLocations(pageNumber)
 
     override fun getAllLocationsDao() = locationDao.getLocations()
 

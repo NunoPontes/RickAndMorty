@@ -1,7 +1,6 @@
 package com.nunop.rickandmorty.ui.episodes
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.ExperimentalPagingApi
 import com.nunop.rickandmorty.databinding.EpisodesFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
-import com.nunop.rickandmorty.ui.characters.CharacterAdapter
-import com.nunop.rickandmorty.ui.characters.CharactersViewModel
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 

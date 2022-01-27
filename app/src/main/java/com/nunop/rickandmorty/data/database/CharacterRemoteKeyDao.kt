@@ -2,7 +2,6 @@ package com.nunop.rickandmorty.data.database
 
 import androidx.room.*
 import com.nunop.rickandmorty.data.database.entities.CharacterRemoteKey
-import com.nunop.rickandmorty.data.database.entities.EpisodeRemoteKey
 
 @Dao
 interface CharacterRemoteKeyDao {

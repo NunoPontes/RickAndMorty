@@ -1,7 +1,6 @@
 package com.nunop.rickandmorty.ui.locations
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import com.nunop.rickandmorty.databinding.LocationsFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @ExperimentalPagingApi
 class LocationsFragment : Fragment() {
@@ -34,7 +34,7 @@ class LocationsFragment : Fragment() {
         mViewModel = (activity as MainActivity).mLocationsViewModel
 
         mViewModel.allLocations.observe(viewLifecycleOwner) { characters ->
-            Log.d("Teste", characters.toString())
+            Timber.d(characters.toString()) //TODO: check
         }
 
         val adapter = LocationAdapter(context)

@@ -1,6 +1,5 @@
 package com.nunop.rickandmorty.ui.episodes
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -10,6 +9,7 @@ import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.repository.episode.EpisodeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @ExperimentalPagingApi
 class EpisodesViewModel(
@@ -40,7 +40,7 @@ class EpisodesViewModel(
                 val result = execute()
                 onSuccess(result)
             } catch (ex: Exception) {
-                Log.e("AAAAA", ex.toString())
+                Timber.e(ex)
             }
         }
     }
