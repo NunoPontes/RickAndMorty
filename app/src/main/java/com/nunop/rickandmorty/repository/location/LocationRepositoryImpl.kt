@@ -20,7 +20,8 @@ class LocationRepositoryImpl(
 
     override fun getAllLocationsDao() = localDataSource.getLocations()
 
-    override suspend fun insertLocation(location: Location) = localDataSource.insertLocation(location)
+    override suspend fun insertLocation(location: Location) =
+        localDataSource.insertLocation(location)
 
     override suspend fun getAllLocations(): Flow<PagingData<ResultLocation>> = Pager(
         config = PagingConfig(pageSize = 20, prefetchDistance = 2),

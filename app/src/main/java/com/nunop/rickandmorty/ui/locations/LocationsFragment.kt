@@ -42,4 +42,10 @@ class LocationsFragment : BaseFragment() {
             footer = PagingLoadStateAdapter(adapter)
         )
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.locationsList.adapter = null
+        _binding = null
+    }
 }

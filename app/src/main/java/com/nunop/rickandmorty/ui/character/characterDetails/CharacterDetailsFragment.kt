@@ -54,14 +54,21 @@ class CharacterDetailsFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun characterDetailsViewModel(repositoryCharacter: CharacterRepositoryImpl) {
-        val viewModelCharacterDetailsProviderFactory =
-            CharacterDetailsViewModelProviderFactory(repositoryCharacter)
-        mCharacterDetailsViewModel =
-            ViewModelProvider(
-                this,
-                viewModelCharacterDetailsProviderFactory
-            )[CharacterDetailsViewModel::class.java]
+        activity?.application?.let {
+            val viewModelCharacterDetailsProviderFactory =
+                CharacterDetailsViewModelProviderFactory(it, repositoryCharacter)
+            mCharacterDetailsViewModel =
+                ViewModelProvider(
+                    this,
+                    viewModelCharacterDetailsProviderFactory
+                )[CharacterDetailsViewModel::class.java]
+        }
     }
 
 }

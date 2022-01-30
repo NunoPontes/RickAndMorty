@@ -46,4 +46,10 @@ class EpisodesFragment : BaseFragment() {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.episodesList.adapter = null
+        _binding = null
+    }
 }

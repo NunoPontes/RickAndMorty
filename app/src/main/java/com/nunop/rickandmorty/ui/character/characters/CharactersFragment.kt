@@ -49,6 +49,12 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.charactersList.adapter = null
+        _binding = null
+    }
+
     override fun onCharacterClick(character: Character) {
         //I could pass the whole object as a parcelable, but I'll pass
         //just the id, because I want to get more examples of MVVM with simple API requests

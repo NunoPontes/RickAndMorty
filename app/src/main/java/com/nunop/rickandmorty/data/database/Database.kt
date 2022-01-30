@@ -16,7 +16,8 @@ import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeC
         EpisodeRemoteKey::class,
         CharacterRemoteKey::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class Database : RoomDatabase() {
 

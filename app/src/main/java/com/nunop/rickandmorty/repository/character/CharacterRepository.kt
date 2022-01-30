@@ -1,5 +1,6 @@
 package com.nunop.rickandmorty.repository.character
 
+import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
@@ -17,5 +18,5 @@ interface CharacterRepository {
 
     suspend fun getCharacterByIdDb(characterId: Int): Character?
 
-    suspend fun getCharacterById(characterId: Int): Character?
+    suspend fun getCharacterById(characterId: Int, context: Context?): Character?
 }

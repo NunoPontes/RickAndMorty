@@ -1,5 +1,6 @@
 package com.nunop.rickandmorty.repository.character
 
+import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -10,6 +11,7 @@ import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants
+import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toCharacter
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
@@ -49,9 +51,9 @@ class CharacterRepositoryImpl(
         return localDataSource.getCharacterById(characterId)
     }
 
-    override suspend fun getCharacterById(characterId: Int): Character? {
-        val internet = true //TODO
-        if (internet) {
+    override suspend fun getCharacterById(characterId: Int, context: Context?): Character? {
+        val utilities = Utilities()
+        if (context?.let { utilities.hasInternetConnection(it) } == true) {
             val response = remoteDataSource.getCharacterById(characterId)
             if (response.isSuccessful && response.body() != null) {
                 val characterResponse = response.body()
