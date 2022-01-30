@@ -5,10 +5,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.nunop.rickandmorty.api.RickAndMortyAPI
-import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.database.entities.EpisodeRemoteKey
+import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.STARTING_PAGE_INDEX
 import com.nunop.rickandmorty.utils.toListEpisodes
 import okio.IOException
@@ -16,8 +16,8 @@ import retrofit2.HttpException
 
 @ExperimentalPagingApi
 class EpisodeRemoteMediator(
-    private val api: RickAndMortyAPI,
-    private val db: Database
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource
 ) : RemoteMediator<Int, Episode>() {
 
     override suspend fun initialize(): InitializeAction {
@@ -37,20 +37,21 @@ class EpisodeRemoteMediator(
         }
 
         try {
-            val response = api.getEpisodes(page = page)
+            val response = remoteDataSource.getEpisodes(page = page)
             val isEndOfList: Boolean = response.body()?.results?.isEmpty() == true
-            db.withTransaction {
+            localDataSource.getDatabase().withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    db.episodeDao.deleteAll()
-                    db.episodeRemoteKeyDao.deleteAll()
+                    localDataSource.deleteAllEpisodes()
+                    localDataSource.deleteAllEpisodeRemoteKey()
                 }
                 val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (isEndOfList) null else page + 1
                 val keys = response.body()?.results?.map {
                     EpisodeRemoteKey(it.id, prevKey = prevKey, nextKey = nextKey)
                 }
-                keys?.let { db.episodeRemoteKeyDao.insertAll(it) }
-                response.body()?.results?.toListEpisodes()?.let { db.episodeDao.insertAll(it) }
+                keys?.let { localDataSource.insertAllEpisodeRemoteKey(it) }
+                response.body()?.results?.toListEpisodes()
+                    ?.let { localDataSource.insertAllEpisodes(it) }
             }
             return MediatorResult.Success(endOfPaginationReached = isEndOfList)
         } catch (exception: IOException) {
@@ -87,7 +88,7 @@ class EpisodeRemoteMediator(
     private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Episode>): EpisodeRemoteKey? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { repoId ->
-                db.episodeRemoteKeyDao.remoteKeysEpisodeId(repoId)
+                localDataSource.remoteKeysEpisodeId(repoId)
             }
         }
     }
@@ -96,14 +97,14 @@ class EpisodeRemoteMediator(
         return state.pages
             .lastOrNull { it.data.isNotEmpty() }
             ?.data?.lastOrNull()
-            ?.let { episode -> episode.id?.let { db.episodeRemoteKeyDao.remoteKeysEpisodeId(it) } }
+            ?.let { episode -> episode.id?.let { localDataSource.remoteKeysEpisodeId(it) } }
     }
 
     private suspend fun getFirstRemoteKey(state: PagingState<Int, Episode>): EpisodeRemoteKey? {
         return state.pages
             .firstOrNull { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { cat -> cat.id?.let { db.episodeRemoteKeyDao.remoteKeysEpisodeId(it) } }
+            ?.let { cat -> cat.id?.let { localDataSource.remoteKeysEpisodeId(it) } }
     }
 
 

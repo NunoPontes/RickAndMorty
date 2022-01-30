@@ -1,15 +1,13 @@
-package com.nunop.rickandmorty.ui.characters
+package com.nunop.rickandmorty.ui.character.characterDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.ExperimentalPagingApi
 import com.nunop.rickandmorty.repository.character.CharacterRepository
 
-@ExperimentalPagingApi
-class CharactersViewModelProviderFactory(private val repository: CharacterRepository) :
+class CharacterDetailsViewModelProviderFactory(private val repository: CharacterRepository) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CharactersViewModel(repository) as T
+        return CharacterDetailsViewModel(repository) as T
     }
 }

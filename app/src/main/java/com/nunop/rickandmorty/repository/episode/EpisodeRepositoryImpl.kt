@@ -4,21 +4,21 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.nunop.rickandmorty.api.RickAndMortyAPI
-import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.paging.EpisodeRemoteMediator
+import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 
 class EpisodeRepositoryImpl(
-    private val api: RickAndMortyAPI,
-    private val db: Database
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource
 ) : EpisodeRepository {
 
     @ExperimentalPagingApi
     override fun getEpisodesFromMediator(): Flow<PagingData<Episode>> {
-        val pagingSourceFactory = { db.episodeDao.getEpisodesPaged() }
+        val pagingSourceFactory = { localDataSource.getEpisodesPaged() }
 
         return Pager(
             config = PagingConfig(
@@ -27,8 +27,8 @@ class EpisodeRepositoryImpl(
                 enablePlaceholders = false,
             ),
             remoteMediator = EpisodeRemoteMediator(
-                api,
-                db
+                remoteDataSource,
+                localDataSource
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow

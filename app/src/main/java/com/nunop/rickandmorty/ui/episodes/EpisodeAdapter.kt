@@ -1,6 +1,5 @@
 package com.nunop.rickandmorty.ui.episodes
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.databinding.EpisodeItemListBinding
 
-class EpisodeAdapter(private val context: Context?) :
+class EpisodeAdapter :
     PagingDataAdapter<Episode, EpisodeAdapter.EpisodeViewHolder>(
         EpisodeComparator
     ) {
@@ -18,8 +17,7 @@ class EpisodeAdapter(private val context: Context?) :
         EpisodeViewHolder(
             EpisodeItemListBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            ),
-            context
+            )
         )
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
@@ -27,19 +25,9 @@ class EpisodeAdapter(private val context: Context?) :
     }
 
     inner class EpisodeViewHolder(
-        private val binding: EpisodeItemListBinding,
-        private val context: Context?
+        private val binding: EpisodeItemListBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
-
-        init {
-//            itemView.setOnClickListener {
-//                characterClickListener?.onCharacterClicked(
-//                    binding,
-//                    getItem(absoluteAdapterPosition) as com.nunop.rickandmorty.data.database.entities.Character
-//                )
-//            }
-        }
 
         fun bind(item: Episode) = binding.apply {
             tvName.text = item.name

@@ -5,7 +5,7 @@
 	app:startDestination="@id/charactersFragment">
 	<fragment
 		android:id="@+id/charactersFragment"
-		android:name="com.nunop.rickandmorty.ui.characters.CharactersFragment"
+		android:name="com.nunop.rickandmorty.ui.character.characters.CharactersFragment"
 		android:label="CharactersFragment" >
 		<action
 			android:id="@+id/action_charactersFragment_to_characterDetailsFragment"
@@ -13,6 +13,11 @@
 	</fragment>
 	<fragment
 		android:id="@+id/characterDetailsFragment"
-		android:name="com.nunop.rickandmorty.ui.characterDetails.CharacterDetailsFragment"
-		android:label="CharacterDetailsFragment" />
+		android:name="com.nunop.rickandmorty.ui.character.characterDetails.CharacterDetailsFragment"
+		android:label="CharacterDetailsFragment" >
+		<argument
+			android:name="characterId"
+			app:argType="integer"
+			android:defaultValue="-1" />
+	</fragment>
 </navigation>

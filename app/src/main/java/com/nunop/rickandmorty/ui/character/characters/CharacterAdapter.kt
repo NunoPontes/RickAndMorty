@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.ui.characters
+package com.nunop.rickandmorty.ui.character.characters
 
 import android.content.Context
 import android.view.LayoutInflater

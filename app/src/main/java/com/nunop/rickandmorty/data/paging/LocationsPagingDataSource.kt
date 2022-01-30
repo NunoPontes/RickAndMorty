@@ -5,12 +5,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
-import com.nunop.rickandmorty.data.database.LocationDao
+import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.utils.toLocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class LocationsPagingDataSource(private val locationDao: LocationDao) :
+class LocationsPagingDataSource(private val localDataSource: LocalDataSource) :
     PagingSource<Int, ResultLocation>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultLocation> {
         val pageNumber = params.key ?: 1
@@ -29,7 +29,7 @@ class LocationsPagingDataSource(private val locationDao: LocationDao) :
             //Insert on the DB
             withContext(Dispatchers.IO) {
                 data?.forEach {
-                    locationDao.insertLocation(it.toLocation())
+                    localDataSource.insertLocation(it.toLocation())
                 }
             }
 

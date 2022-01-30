@@ -5,10 +5,10 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.nunop.rickandmorty.api.RickAndMortyAPI
-import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.CharacterRemoteKey
+import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.STARTING_PAGE_INDEX
 import com.nunop.rickandmorty.utils.toListCharacters
 import okio.IOException
@@ -16,8 +16,8 @@ import retrofit2.HttpException
 
 @ExperimentalPagingApi
 class CharacterRemoteMediator(
-    private val api: RickAndMortyAPI,
-    private val db: Database
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource
 ) : RemoteMediator<Int, Character>() {
 
     override suspend fun initialize(): InitializeAction {
@@ -37,20 +37,21 @@ class CharacterRemoteMediator(
         }
 
         try {
-            val response = api.getCharacters(page = page)
+            val response = remoteDataSource.getCharacters(page = page)
             val isEndOfList: Boolean = response.body()?.results?.isEmpty() == true
-            db.withTransaction {
+            localDataSource.getDatabase().withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    db.characterDao.deleteAll()
-                    db.characterRemoteKeyDao.deleteAll()
+                    localDataSource.deleteAllCharacters()
+                    localDataSource.deleteAllCharacterRemoteKey()
                 }
                 val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (isEndOfList) null else page + 1
                 val keys = response.body()?.results?.map {
                     CharacterRemoteKey(it.id, prevKey = prevKey, nextKey = nextKey)
                 }
-                keys?.let { db.characterRemoteKeyDao.insertAll(it) }
-                response.body()?.results?.toListCharacters()?.let { db.characterDao.insertAll(it) }
+                keys?.let { localDataSource.insertAllCharacterRemoteKey(it) }
+                response.body()?.results?.toListCharacters()
+                    ?.let { localDataSource.insertAllCharacters(it) }
             }
             return MediatorResult.Success(endOfPaginationReached = isEndOfList)
         } catch (exception: IOException) {
@@ -88,7 +89,7 @@ class CharacterRemoteMediator(
             CharacterRemoteKey? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { repoId ->
-                db.characterRemoteKeyDao.remoteKeysCharacterId(repoId)
+                localDataSource.remoteKeysCharacterId(repoId)
             }
         }
     }
@@ -99,7 +100,7 @@ class CharacterRemoteMediator(
             ?.data?.lastOrNull()
             ?.let { character ->
                 character.id?.let {
-                    db.characterRemoteKeyDao.remoteKeysCharacterId(
+                    localDataSource.remoteKeysCharacterId(
                         it
                     )
                 }
@@ -110,7 +111,7 @@ class CharacterRemoteMediator(
         return state.pages
             .firstOrNull { it.data.isNotEmpty() }
             ?.data?.firstOrNull()
-            ?.let { cat -> cat.id?.let { db.characterRemoteKeyDao.remoteKeysCharacterId(it) } }
+            ?.let { cat -> cat.id?.let { localDataSource.remoteKeysCharacterId(it) } }
     }
 
 

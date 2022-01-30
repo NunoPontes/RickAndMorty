@@ -1,6 +1,5 @@
 package com.nunop.rickandmorty.ui.locations
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.databinding.LocationItemListBinding
 
-class LocationAdapter(private val context: Context?) :
+class LocationAdapter :
     PagingDataAdapter<ResultLocation, LocationAdapter.CharacterViewHolder>(
         LocationComparator
     ) {
@@ -18,8 +17,7 @@ class LocationAdapter(private val context: Context?) :
         CharacterViewHolder(
             LocationItemListBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            ),
-            context
+            )
         )
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
@@ -27,19 +25,9 @@ class LocationAdapter(private val context: Context?) :
     }
 
     inner class CharacterViewHolder(
-        private val binding: LocationItemListBinding,
-        private val context: Context?
+        private val binding: LocationItemListBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
-
-        init {
-//            itemView.setOnClickListener {
-//                characterClickListener?.onCharacterClicked(
-//                    binding,
-//                    getItem(absoluteAdapterPosition) as com.nunop.rickandmorty.data.database.entities.Character
-//                )
-//            }
-        }
 
         fun bind(item: ResultLocation) = binding.apply {
             tvName.text = item.name
