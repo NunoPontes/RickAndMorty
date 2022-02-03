@@ -4,6 +4,7 @@ import com.nunop.rickandmorty.api.RickAndMortyAPI
 import com.nunop.rickandmorty.data.api.models.character.CharacterResponse
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.episode.EpisodeResponse
+import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.api.models.location.LocationResponse
 import retrofit2.Response
 
@@ -26,5 +27,9 @@ class RemoteDataSource(private val api: RickAndMortyAPI) :
 
     override suspend fun getEpisodes(page: Int): Response<EpisodeResponse> {
         return api.getEpisodes(page)
+    }
+
+    override suspend fun getEpisodeById(episodeId: Int): Response<ResultEpisode> {
+        return api.getEpisodeById(episodeId)
     }
 }

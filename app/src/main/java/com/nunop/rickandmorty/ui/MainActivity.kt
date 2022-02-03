@@ -22,8 +22,8 @@ import com.nunop.rickandmorty.repository.episode.EpisodeRepositoryImpl
 import com.nunop.rickandmorty.repository.location.LocationRepositoryImpl
 import com.nunop.rickandmorty.ui.character.characters.CharactersViewModel
 import com.nunop.rickandmorty.ui.character.characters.CharactersViewModelProviderFactory
-import com.nunop.rickandmorty.ui.episodes.EpisodesViewModel
-import com.nunop.rickandmorty.ui.episodes.EpisodesViewModelProviderFactory
+import com.nunop.rickandmorty.ui.episode.episodes.EpisodesViewModel
+import com.nunop.rickandmorty.ui.episode.episodes.EpisodesViewModelProviderFactory
 import com.nunop.rickandmorty.ui.locations.LocationsViewModel
 import com.nunop.rickandmorty.ui.locations.LocationsViewModelProviderFactory
 

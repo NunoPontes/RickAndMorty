@@ -1,6 +1,7 @@
-package com.nunop.rickandmorty.ui.episodes
+package com.nunop.rickandmorty.ui.episode.episodes
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -8,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.databinding.EpisodeItemListBinding
 
-class EpisodeAdapter :
+class EpisodeAdapter(private val episodeClickListener: OnEpisodeClickListener) :
     PagingDataAdapter<Episode, EpisodeAdapter.EpisodeViewHolder>(
         EpisodeComparator
     ) {
@@ -17,7 +18,8 @@ class EpisodeAdapter :
         EpisodeViewHolder(
             EpisodeItemListBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            )
+            ),
+            episodeClickListener
         )
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
@@ -25,14 +27,27 @@ class EpisodeAdapter :
     }
 
     inner class EpisodeViewHolder(
-        private val binding: EpisodeItemListBinding
+        private val binding: EpisodeItemListBinding,
+        private val episodeClickListener: OnEpisodeClickListener
     ) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+        init {
+            binding.root.setOnClickListener(this)
+        }
 
         fun bind(item: Episode) = binding.apply {
             tvName.text = item.name
             tvGender.text = item.air_date
         }
+
+        override fun onClick(p0: View?) {
+            episodeClickListener.onEpisodeClick(getItem(bindingAdapterPosition) as Episode)
+        }
+    }
+
+    interface OnEpisodeClickListener {
+        fun onEpisodeClick(episode: Episode)
     }
 
     object EpisodeComparator :

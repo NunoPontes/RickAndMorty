@@ -12,6 +12,7 @@ import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.databinding.CharacterDetailsFragmentBinding
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.repository.character.CharacterRepository
 import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
 
 class CharacterDetailsFragment : BaseFragment() {
@@ -59,7 +60,7 @@ class CharacterDetailsFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun characterDetailsViewModel(repositoryCharacter: CharacterRepositoryImpl) {
+    private fun characterDetailsViewModel(repositoryCharacter: CharacterRepository) {
         activity?.application?.let {
             val viewModelCharacterDetailsProviderFactory =
                 CharacterDetailsViewModelProviderFactory(it, repositoryCharacter)

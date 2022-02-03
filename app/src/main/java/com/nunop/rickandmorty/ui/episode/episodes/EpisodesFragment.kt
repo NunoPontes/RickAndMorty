@@ -1,18 +1,20 @@
-package com.nunop.rickandmorty.ui.episodes
+package com.nunop.rickandmorty.ui.episode.episodes
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import com.nunop.rickandmorty.base.BaseFragment
+import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.databinding.EpisodesFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalPagingApi
-class EpisodesFragment : BaseFragment() {
+class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
     //Uses paging 3 and saves on the DB and uses it using a remote mediator that handles data
     // from api and db
     private var _binding: EpisodesFragmentBinding? = null
@@ -33,7 +35,7 @@ class EpisodesFragment : BaseFragment() {
         mViewModel = (activity as MainActivity).mEpisodesViewModel
 
 
-        val adapter = EpisodeAdapter()
+        val adapter = EpisodeAdapter(this)
 
         binding.episodesList.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(adapter),
@@ -51,5 +53,14 @@ class EpisodesFragment : BaseFragment() {
         super.onDestroyView()
         binding.episodesList.adapter = null
         _binding = null
+    }
+
+    override fun onEpisodeClick(episode: Episode) {
+        episode.id?.let {
+            findNavController().navigate(
+                EpisodesFragmentDirections.actionEpisodesFragmentToEpisodeDetailsFragment
+                    (episodeId = it)
+            )
+        }
     }
 }

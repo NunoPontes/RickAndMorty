@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.ui.episodes
+package com.nunop.rickandmorty.ui.episode.episodes
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi

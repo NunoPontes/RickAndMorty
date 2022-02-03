@@ -1,5 +1,6 @@
 package com.nunop.rickandmorty.repository.episode
 
+import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -9,6 +10,8 @@ import com.nunop.rickandmorty.data.paging.EpisodeRemoteMediator
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.PAGE_SIZE
+import com.nunop.rickandmorty.utils.Utilities
+import com.nunop.rickandmorty.utils.toEpisode
 import kotlinx.coroutines.flow.Flow
 
 class EpisodeRepositoryImpl(
@@ -32,5 +35,26 @@ class EpisodeRepositoryImpl(
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow
+    }
+
+    override suspend fun getEpisodeById(episodeId: Int, context: Context?): Episode? {
+        val utilities = Utilities()
+        if (context?.let { utilities.hasInternetConnection(it) } == true) {
+            val response = remoteDataSource.getEpisodeById(episodeId)
+            if (response.isSuccessful && response.body() != null) {
+                val episodeResponse = response.body()
+                episodeResponse?.toEpisode()?.let {
+                    localDataSource.insertEpisode(
+                        it
+                    )
+                    return it
+                }
+                return null
+            } else {
+                return localDataSource.getEpisodeById(episodeId)
+            }
+        } else {
+            return localDataSource.getEpisodeById(episodeId)
+        }
     }
 }
