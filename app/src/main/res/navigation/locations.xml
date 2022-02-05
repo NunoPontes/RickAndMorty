@@ -5,6 +5,19 @@
 	app:startDestination="@id/locationsFragment">
 	<fragment
 		android:id="@+id/locationsFragment"
-		android:name="com.nunop.rickandmorty.ui.locations.LocationsFragment"
-		android:label="LocationsFragment" />
+		android:name="com.nunop.rickandmorty.ui.location.locations.LocationsFragment"
+		android:label="LocationsFragment" >
+		<action
+			android:id="@+id/action_locationsFragment_to_locationDetailsFragment"
+			app:destination="@id/locationDetailsFragment" />
+	</fragment>
+	<fragment
+		android:id="@+id/locationDetailsFragment"
+		android:name="com.nunop.rickandmorty.ui.location.locationDetails.LocationDetailsFragment"
+		android:label="LocationDetailsFragment" >
+		<argument
+			android:name="locationId"
+			app:argType="integer"
+			android:defaultValue="-1" />
+	</fragment>
 </navigation>

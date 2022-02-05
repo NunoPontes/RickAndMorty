@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.ui.locations
+package com.nunop.rickandmorty.ui.location.locations
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -24,8 +24,8 @@ import com.nunop.rickandmorty.ui.character.characters.CharactersViewModel
 import com.nunop.rickandmorty.ui.character.characters.CharactersViewModelProviderFactory
 import com.nunop.rickandmorty.ui.episode.episodes.EpisodesViewModel
 import com.nunop.rickandmorty.ui.episode.episodes.EpisodesViewModelProviderFactory
-import com.nunop.rickandmorty.ui.locations.LocationsViewModel
-import com.nunop.rickandmorty.ui.locations.LocationsViewModelProviderFactory
+import com.nunop.rickandmorty.ui.location.locations.LocationsViewModel
+import com.nunop.rickandmorty.ui.location.locations.LocationsViewModelProviderFactory
 
 @ExperimentalPagingApi
 class MainActivity : AppCompatActivity() {
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         episodeViewModel(remoteDataSource, localDataSource)
 
 
-        locationViewModel(localDataSource)
+        locationViewModel(remoteDataSource, localDataSource)
 
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
@@ -64,11 +64,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun locationViewModel(
+        remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource
     ) {
         val repositoryLocation = LocationRepositoryImpl(
             localDataSource,
-            LocationsPagingDataSource(localDataSource)
+            LocationsPagingDataSource(localDataSource),
+            remoteDataSource
         )
         val viewModelLocationsProviderFactory =
             LocationsViewModelProviderFactory(repositoryLocation)

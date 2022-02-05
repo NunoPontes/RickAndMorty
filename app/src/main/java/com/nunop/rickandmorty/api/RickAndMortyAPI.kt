@@ -5,6 +5,7 @@ import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.episode.EpisodeResponse
 import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.api.models.location.LocationResponse
+import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -26,6 +27,11 @@ interface RickAndMortyAPI {
     suspend fun getLocations(
         @Query("page") page: Int
     ): Response<LocationResponse>
+
+    @GET("location/{id}")
+    suspend fun getLocationById(
+        @Path("id") locationId: Int
+    ): Response<ResultLocation>
 
     @GET("episode")
     suspend fun getEpisodes(

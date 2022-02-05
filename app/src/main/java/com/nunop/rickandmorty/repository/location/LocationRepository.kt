@@ -1,5 +1,6 @@
 package com.nunop.rickandmorty.repository.location
 
+import android.content.Context
 import androidx.paging.PagingData
 import com.nunop.rickandmorty.data.api.models.location.LocationResponse
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
@@ -12,4 +13,6 @@ interface LocationRepository {
     fun getAllLocationsDao(): Flow<List<Location>>
     suspend fun getLocations(pageNumber: Int): Response<LocationResponse>
     suspend fun insertLocation(location: Location)
+
+    suspend fun getLocationById(locationId: Int, context: Context?): Location?
 }
