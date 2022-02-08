@@ -11,7 +11,6 @@ import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Utilities
-import com.nunop.rickandmorty.utils.toEpisode
 import com.nunop.rickandmorty.utils.toLocation
 import com.nunop.rickandmorty.utils.toLocationCharacterCrossRefList
 import kotlinx.coroutines.flow.Flow

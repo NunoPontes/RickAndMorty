@@ -31,6 +31,8 @@ interface EpisodeDao {
     suspend fun deleteAll()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllEpisodeCharacterCrossRef(episodeCharacterCrossRef:
-                                                  List<EpisodeCharacterCrossRef>)
+    suspend fun insertAllEpisodeCharacterCrossRef(
+        episodeCharacterCrossRef:
+        List<EpisodeCharacterCrossRef>
+    )
 }

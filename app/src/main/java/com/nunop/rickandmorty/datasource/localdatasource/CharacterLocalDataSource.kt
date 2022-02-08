@@ -21,6 +21,8 @@ interface CharacterLocalDataSource {
 
     suspend fun insertCharacterEpisodeCrossRef(characterEpisodeCrossRef: CharacterEpisodeCrossRef)
 
-    suspend fun insertAllCharacterEpisodeCrossRef(characterEpisodeCrossRef:
-                                                  List<CharacterEpisodeCrossRef>)
+    suspend fun insertAllCharacterEpisodeCrossRef(
+        characterEpisodeCrossRef:
+        List<CharacterEpisodeCrossRef>
+    )
 }

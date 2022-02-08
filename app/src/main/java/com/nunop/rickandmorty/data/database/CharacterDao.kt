@@ -34,7 +34,9 @@ interface CharacterDao {
     suspend fun insertCharacterEpisodeCrossRef(characterEpisodeCrossRef: CharacterEpisodeCrossRef)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllCharacterEpisodeCrossRef(characterEpisodeCrossRef:
-                                                      List<CharacterEpisodeCrossRef>)
+    suspend fun insertAllCharacterEpisodeCrossRef(
+        characterEpisodeCrossRef:
+        List<CharacterEpisodeCrossRef>
+    )
 
 }

@@ -2,8 +2,6 @@ package com.nunop.rickandmorty.data.database
 
 import androidx.room.*
 import com.nunop.rickandmorty.data.database.entities.Location
-import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeCrossRef
-import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
 import com.nunop.rickandmorty.data.database.entities.relations.LocationCharacterCrossRef
 import com.nunop.rickandmorty.data.database.entities.relations.LocationWithCharacters
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +26,8 @@ interface LocationDao {
     suspend fun getLocationWithCharacters(locationId: Int): List<LocationWithCharacters>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllLocationCharacterCrossRef(locationCharacterCrossRef:
-                                                  List<LocationCharacterCrossRef>)
+    suspend fun insertAllLocationCharacterCrossRef(
+        locationCharacterCrossRef:
+        List<LocationCharacterCrossRef>
+    )
 }
