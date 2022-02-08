@@ -1,7 +1,10 @@
 package com.nunop.rickandmorty.data.database.entities
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.nunop.rickandmorty.data.api.models.character.Location
+import com.nunop.rickandmorty.data.api.models.character.Origin
 
 @Entity
 data class Character(
@@ -13,5 +16,11 @@ data class Character(
     val type: String? = null,
     val image: String? = null,
     val originLocationId: Int? = null,
-    val currentLocationId: Int? = null
+    val currentLocationId: Int? = null,
+    val created: String? = null,
+    @Embedded(prefix = "location")
+    val location: Location? = null,
+    @Embedded(prefix = "origin")
+    val origin: Origin? = null,
+    val url: String? = null
 )

@@ -13,6 +13,7 @@ import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toEpisode
 import com.nunop.rickandmorty.utils.toLocation
+import com.nunop.rickandmorty.utils.toLocationCharacterCrossRefList
 import kotlinx.coroutines.flow.Flow
 
 class LocationRepositoryImpl(
@@ -23,8 +24,6 @@ class LocationRepositoryImpl(
 
     override suspend fun getLocations(pageNumber: Int) =
         RetrofitInstance.api.getLocations(pageNumber)
-
-    override fun getAllLocationsDao() = localDataSource.getLocations()
 
     override suspend fun insertLocation(location: Location) =
         localDataSource.insertLocation(location)
@@ -45,14 +44,17 @@ class LocationRepositoryImpl(
                     localDataSource.insertLocation(
                         it
                     )
+                    localDataSource.insertAllLocationCharacterCrossRef(locationResponse.toLocationCharacterCrossRefList())
                     return it
                 }
                 return null
             } else {
                 return localDataSource.getLocationById(locationId)
+                //TODO: get the list form the other table
             }
         } else {
             return localDataSource.getLocationById(locationId)
+            //TODO: get the list form the other table
         }
     }
 }

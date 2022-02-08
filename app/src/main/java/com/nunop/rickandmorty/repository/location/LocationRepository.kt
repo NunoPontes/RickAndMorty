@@ -10,7 +10,6 @@ import retrofit2.Response
 
 interface LocationRepository {
     suspend fun getAllLocations(): Flow<PagingData<ResultLocation>>
-    fun getAllLocationsDao(): Flow<List<Location>>
     suspend fun getLocations(pageNumber: Int): Response<LocationResponse>
     suspend fun insertLocation(location: Location)
 

@@ -5,6 +5,8 @@ import androidx.paging.PagingSource
 import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.*
 import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeCrossRef
+import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
+import com.nunop.rickandmorty.data.database.entities.relations.LocationCharacterCrossRef
 import com.nunop.rickandmorty.data.database.entities.relations.LocationWithCharacters
 import kotlinx.coroutines.flow.Flow
 
@@ -44,6 +46,10 @@ class LocalDataSource(private val db: Database) :
 
     override suspend fun insertCharacterEpisodeCrossRef(characterEpisodeCrossRef: CharacterEpisodeCrossRef) {
         db.characterDao.insertCharacterEpisodeCrossRef(characterEpisodeCrossRef)
+    }
+
+    override suspend fun insertAllCharacterEpisodeCrossRef(characterEpisodeCrossRef: List<CharacterEpisodeCrossRef>) {
+        db.characterDao.insertAllCharacterEpisodeCrossRef(characterEpisodeCrossRef)
     }
 
 
@@ -86,6 +92,10 @@ class LocalDataSource(private val db: Database) :
         db.episodeDao.deleteAll()
     }
 
+    override suspend fun insertAllEpisodeCharacterCrossRef(episodeCharacterCrossRef: List<EpisodeCharacterCrossRef>) {
+        return db.episodeDao.insertAllEpisodeCharacterCrossRef(episodeCharacterCrossRef)
+    }
+
 
     //--------------------------Episode Remote Key--------------------------
     override suspend fun insertAllEpisodeRemoteKey(remoteKey: List<EpisodeRemoteKey>) {
@@ -118,4 +128,10 @@ class LocalDataSource(private val db: Database) :
     override suspend fun getLocationWithCharacters(locationId: Int): List<LocationWithCharacters> {
         return db.locationDao.getLocationWithCharacters(locationId)
     }
+
+    override suspend fun insertAllLocationCharacterCrossRef(locationCharacterCrossRef: List<LocationCharacterCrossRef>) {
+        return db.locationDao.insertAllLocationCharacterCrossRef(locationCharacterCrossRef)
+    }
+
+
 }

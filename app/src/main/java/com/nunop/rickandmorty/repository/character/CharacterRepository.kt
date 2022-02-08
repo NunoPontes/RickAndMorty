@@ -14,8 +14,6 @@ interface CharacterRepository {
 
     suspend fun getCharacterByIdApi(characterId: Int): Response<ResultCharacter>
 
-    suspend fun upsertCharacter(character: Character)
-
     suspend fun getCharacterByIdDb(characterId: Int): Character?
 
     suspend fun getCharacterById(characterId: Int, context: Context?): Character?

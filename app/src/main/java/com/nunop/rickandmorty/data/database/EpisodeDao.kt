@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.nunop.rickandmorty.data.database.entities.Episode
+import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
 
 @Dao
 interface EpisodeDao {
@@ -28,4 +29,8 @@ interface EpisodeDao {
 
     @Query("DELETE FROM episode")
     suspend fun deleteAll()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllEpisodeCharacterCrossRef(episodeCharacterCrossRef:
+                                                  List<EpisodeCharacterCrossRef>)
 }

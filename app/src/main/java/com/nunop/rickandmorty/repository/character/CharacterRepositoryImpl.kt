@@ -13,6 +13,7 @@ import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toCharacter
+import com.nunop.rickandmorty.utils.toCharacterEpisodeCrossRefList
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
@@ -43,12 +44,9 @@ class CharacterRepositoryImpl(
         return remoteDataSource.getCharacterById(characterId)
     }
 
-    override suspend fun upsertCharacter(character: Character) {
-        localDataSource.insertCharacter(character)
-    }
-
     override suspend fun getCharacterByIdDb(characterId: Int): Character? {
         return localDataSource.getCharacterById(characterId)
+        //TODO: get the list form the other table
     }
 
     override suspend fun getCharacterById(characterId: Int, context: Context?): Character? {
@@ -61,14 +59,17 @@ class CharacterRepositoryImpl(
                     localDataSource.insertCharacter(
                         it
                     )
+                    localDataSource.insertAllCharacterEpisodeCrossRef(characterResponse.toCharacterEpisodeCrossRefList())
                     return it
                 }
                 return null
             } else {
                 return localDataSource.getCharacterById(characterId)
+                //TODO: get the list form the other table
             }
         } else {
             return localDataSource.getCharacterById(characterId)
+            //TODO: get the list form the other table
         }
     }
 }

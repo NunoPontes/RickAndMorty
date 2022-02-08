@@ -11,7 +11,7 @@ data class EpisodeWithCharacters(
     @Relation(
         parentColumn = "id",
         entityColumn = "id",
-        associateBy = Junction(CharacterEpisodeCrossRef::class)
+        associateBy = Junction(EpisodeCharacterCrossRef::class)
     )
     val characters: List<Character>
 )

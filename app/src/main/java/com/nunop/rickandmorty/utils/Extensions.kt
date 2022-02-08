@@ -11,6 +11,9 @@ import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.database.entities.Location
+import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeCrossRef
+import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
+import com.nunop.rickandmorty.data.database.entities.relations.LocationCharacterCrossRef
 import timber.log.Timber
 
 fun ResultCharacter.toCharacter(): Character {
@@ -23,7 +26,11 @@ fun ResultCharacter.toCharacter(): Character {
         type = this.type,
         image = this.image,
         originLocationId = this.origin?.url?.getLocationId(),
-        currentLocationId = this.location?.url?.getLocationId()
+        currentLocationId = this.location?.url?.getLocationId(),
+        created = this.created,
+        location = this.location,
+        origin = this.origin,
+        url = this.url
     )
 }
 
@@ -46,13 +53,19 @@ fun List<ResultEpisode>.toListEpisodes(): List<Episode> {
 fun ResultEpisode.toEpisode() = Episode(
     id = id,
     name = name,
-    air_date = air_date
+    air_date = air_date,
+    created = created,
+    episode = episode,
+    url = url
 )
 
 fun ResultLocation.toLocation() = Location(
     id = id,
     name = name,
-    type = type
+    type = type,
+    created = created,
+    dimension = dimension,
+    url = url
 )
 
 fun String.getLocationId(): Int? {
@@ -62,6 +75,58 @@ fun String.getLocationId(): Int? {
         Timber.e(e)
         null
     }
+}
+
+fun String.getEpisodeId(): Int? {
+    return try {
+        this.substringAfterLast("https://rickandmortyapi.com/api/episode/").toInt()
+    } catch (e: Exception) {
+        Timber.e(e)
+        null
+    }
+}
+
+fun String.getCharacterId(): Int? {
+    return try {
+        this.substringAfterLast("https://rickandmortyapi.com/api/character/").toInt()
+    } catch (e: Exception) {
+        Timber.e(e)
+        null
+    }
+}
+
+fun ResultCharacter.toCharacterEpisodeCrossRefList(): List<CharacterEpisodeCrossRef> {
+    val list = mutableListOf<CharacterEpisodeCrossRef>()
+
+    this.episode?.forEach { episode ->
+        this.id?.let { episode.getEpisodeId()?.let { it1 -> CharacterEpisodeCrossRef(it, it1) } }
+            ?.let { list.add(it) }
+    }
+    return list
+}
+
+fun ResultEpisode.toEpisodeCharacterCrossRefList(): List<EpisodeCharacterCrossRef> {
+    val list = mutableListOf<EpisodeCharacterCrossRef>()
+
+    this.characters?.forEach { character ->
+        this.id?.let {
+            character.getCharacterId()?.let { it1 -> EpisodeCharacterCrossRef(it1, it) }
+        }
+            ?.let { list.add(it) }
+    }
+    return list
+}
+
+fun ResultLocation.toLocationCharacterCrossRefList(): List<LocationCharacterCrossRef> {
+    val list = mutableListOf<LocationCharacterCrossRef>()
+
+    this.residents?.forEach { residents ->
+        this.id?.let {
+            residents.getCharacterId()?.let { it1 -> LocationCharacterCrossRef(it, it1) }
+        }
+            ?.let { list.add(it) }
+    }
+    return list
 }
 
 /**

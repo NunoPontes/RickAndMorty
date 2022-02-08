@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nunop.rickandmorty.data.database.entities.*
 import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeCrossRef
+import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
+import com.nunop.rickandmorty.data.database.entities.relations.LocationCharacterCrossRef
 
 @Database(
     entities = [
@@ -14,7 +16,9 @@ import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeC
         Location::class,
         CharacterEpisodeCrossRef::class,
         EpisodeRemoteKey::class,
-        CharacterRemoteKey::class
+        CharacterRemoteKey::class,
+        EpisodeCharacterCrossRef::class,
+        LocationCharacterCrossRef::class
     ],
     version = 1,
     exportSchema = false

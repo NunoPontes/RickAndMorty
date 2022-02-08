@@ -3,6 +3,7 @@ package com.nunop.rickandmorty.datasource.localdatasource
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource
 import com.nunop.rickandmorty.data.database.entities.Episode
+import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
 
 interface EpisodeLocalDataSource {
 
@@ -17,4 +18,7 @@ interface EpisodeLocalDataSource {
     fun getEpisodesPaged(): PagingSource<Int, Episode>
 
     suspend fun deleteAllEpisodes()
+
+    suspend fun insertAllEpisodeCharacterCrossRef(episodeCharacterCrossRef:
+                                                  List<EpisodeCharacterCrossRef>)
 }

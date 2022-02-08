@@ -12,6 +12,7 @@ import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.PAGE_SIZE
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toEpisode
+import com.nunop.rickandmorty.utils.toEpisodeCharacterCrossRefList
 import kotlinx.coroutines.flow.Flow
 
 class EpisodeRepositoryImpl(
@@ -47,14 +48,17 @@ class EpisodeRepositoryImpl(
                     localDataSource.insertEpisode(
                         it
                     )
+                    localDataSource.insertAllEpisodeCharacterCrossRef(episodeResponse.toEpisodeCharacterCrossRefList())
                     return it
                 }
                 return null
             } else {
                 return localDataSource.getEpisodeById(episodeId)
+                //TODO: get the list form the other table
             }
         } else {
             return localDataSource.getEpisodeById(episodeId)
+            //TODO: get the list form the other table
         }
     }
 }
