@@ -54,11 +54,9 @@ class EpisodeRepositoryImpl(
                 return null
             } else {
                 return localDataSource.getEpisodeById(episodeId)
-                //TODO: get the list form the other table
             }
         } else {
             return localDataSource.getEpisodeById(episodeId)
-            //TODO: get the list form the other table
         }
     }
 }

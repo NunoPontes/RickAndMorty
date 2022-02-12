@@ -49,11 +49,9 @@ class LocationRepositoryImpl(
                 return null
             } else {
                 return localDataSource.getLocationById(locationId)
-                //TODO: get the list form the other table
             }
         } else {
             return localDataSource.getLocationById(locationId)
-            //TODO: get the list form the other table
         }
     }
 }

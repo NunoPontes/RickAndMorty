@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.nunop.rickandmorty.App
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.repository.episode.EpisodeRepository
+import com.nunop.rickandmorty.utils.Error
 import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,7 @@ class EpisodeDetailsViewModel(app: Application, private val repository: EpisodeR
             if (result != null) {
                 episode.postValue(Resource.Success(result))
             } else {
-                episode.postValue(Resource.Error("Error")) //Todo: extract errors
+                episode.postValue(Resource.Error(Error.GENERIC.error))
             }
         }
     }

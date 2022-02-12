@@ -14,6 +14,7 @@ import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.repository.episode.EpisodeRepository
 import com.nunop.rickandmorty.repository.episode.EpisodeRepositoryImpl
+import com.nunop.rickandmorty.utils.Resource
 
 class EpisodeDetailsFragment : BaseFragment() {
 
@@ -47,9 +48,19 @@ class EpisodeDetailsFragment : BaseFragment() {
             mEpisodeDetailsViewModel.getEpisodeById(episodeId)
         }
 
-        mEpisodeDetailsViewModel.episodeLiveData.observe(viewLifecycleOwner) { episode ->
+        mEpisodeDetailsViewModel.episodeLiveData.observe(viewLifecycleOwner) { response ->
 
-            binding.textView2.text = episode.data?.name
+            when (response) {
+                is Resource.Success -> {
+                    binding.textView2.text = response.data?.name
+                }
+                is Resource.Error -> {
+                    //TODO:
+                }
+                is Resource.Loading -> {
+                    //TODO:
+                }
+            }
         }
 
         return binding.root

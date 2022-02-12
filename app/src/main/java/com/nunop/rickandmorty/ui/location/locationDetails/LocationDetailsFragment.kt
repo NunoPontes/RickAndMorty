@@ -15,6 +15,7 @@ import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.repository.location.LocationRepository
 import com.nunop.rickandmorty.repository.location.LocationRepositoryImpl
+import com.nunop.rickandmorty.utils.Resource
 
 class LocationDetailsFragment : BaseFragment() {
 
@@ -51,9 +52,18 @@ class LocationDetailsFragment : BaseFragment() {
             mLocationDetailsViewModel.getLocationById(locationId)
         }
 
-        mLocationDetailsViewModel.locationLiveData.observe(viewLifecycleOwner) { location ->
-
-            binding.textView2.text = location.data?.name
+        mLocationDetailsViewModel.locationLiveData.observe(viewLifecycleOwner) { response ->
+            when (response) {
+                is Resource.Success -> {
+                    binding.textView2.text = response.data?.name
+                }
+                is Resource.Error -> {
+                    //TODO:
+                }
+                is Resource.Loading -> {
+                    //TODO:
+                }
+            }
         }
 
         return binding.root

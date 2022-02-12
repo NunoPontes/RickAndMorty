@@ -10,10 +10,7 @@ import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.utils.Constants
-import com.nunop.rickandmorty.utils.Utilities
-import com.nunop.rickandmorty.utils.toCharacter
-import com.nunop.rickandmorty.utils.toCharacterEpisodeCrossRefList
+import com.nunop.rickandmorty.utils.*
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
@@ -46,7 +43,6 @@ class CharacterRepositoryImpl(
 
     override suspend fun getCharacterByIdDb(characterId: Int): Character? {
         return localDataSource.getCharacterById(characterId)
-        //TODO: get the list form the other table
     }
 
     override suspend fun getCharacterById(characterId: Int, context: Context?): Character? {
@@ -65,11 +61,9 @@ class CharacterRepositoryImpl(
                 return null
             } else {
                 return localDataSource.getCharacterById(characterId)
-                //TODO: get the list form the other table
             }
         } else {
             return localDataSource.getCharacterById(characterId)
-            //TODO: get the list form the other table
         }
     }
 }

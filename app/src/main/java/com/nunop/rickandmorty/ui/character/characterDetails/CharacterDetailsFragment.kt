@@ -14,6 +14,7 @@ import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.repository.character.CharacterRepository
 import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
+import com.nunop.rickandmorty.utils.Resource
 
 class CharacterDetailsFragment : BaseFragment() {
 
@@ -47,9 +48,19 @@ class CharacterDetailsFragment : BaseFragment() {
             mCharacterDetailsViewModel.getCharacterById(characterId)
         }
 
-        mCharacterDetailsViewModel.characterLiveData.observe(viewLifecycleOwner) { character ->
+        mCharacterDetailsViewModel.characterLiveData.observe(viewLifecycleOwner) { response ->
 
-            binding.textView2.text = character.data?.name
+            when (response) {
+                is Resource.Success -> {
+                    binding.textView2.text = response.data?.name
+                }
+                is Resource.Error -> {
+                    //TODO:
+                }
+                is Resource.Loading -> {
+                    //TODO:
+                }
+            }
         }
 
         return binding.root

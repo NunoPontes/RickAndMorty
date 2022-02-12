@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.nunop.rickandmorty.App
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.repository.character.CharacterRepository
+import com.nunop.rickandmorty.utils.Error
 import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,7 @@ class CharacterDetailsViewModel(app: Application, private val repository: Charac
             if (result != null) {
                 character.postValue(Resource.Success(result))
             } else {
-                character.postValue(Resource.Error("Error")) //Todo: extract errors
+                character.postValue(Resource.Error(Error.GENERIC.error))
             }
         }
     }

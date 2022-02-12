@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.nunop.rickandmorty.App
 import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.repository.location.LocationRepository
+import com.nunop.rickandmorty.utils.Error
 import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,7 @@ class LocationDetailsViewModel(app: Application, private val repository: Locatio
             if (result != null) {
                 location.postValue(Resource.Success(result))
             } else {
-                location.postValue(Resource.Error("Error")) //Todo: extract errors
+                location.postValue(Resource.Error(Error.GENERIC.error))
             }
         }
     }
