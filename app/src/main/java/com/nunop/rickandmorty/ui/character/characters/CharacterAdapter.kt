@@ -45,9 +45,7 @@ class CharacterAdapter(
 
         fun bind(item: Character) = binding.apply {
             tvName.text = item.name
-            tvGender.text = item.gender
-            tvSpecies.text = item.species
-            tvType.text = item.type
+            ivPhoto.clipToOutline = true
             context?.let {
                 Glide.with(it)
                     .load(item.image)

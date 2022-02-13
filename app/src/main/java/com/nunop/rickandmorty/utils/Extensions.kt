@@ -5,6 +5,8 @@ import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
@@ -143,4 +145,13 @@ fun NavController.navigateSafe(
     } catch (e: Exception) {
         Timber.e(e.message ?: "Exception")
     }
+}
+
+/**
+ * @param columnWidth - in dp
+ */
+fun RecyclerView.autoFitColumns(columnWidth: Int) {
+    val displayMetrics = this.context.resources.displayMetrics
+    val noOfColumns = ((displayMetrics.widthPixels / displayMetrics.density) / columnWidth).toInt()
+    this.layoutManager = GridLayoutManager(this.context, noOfColumns)
 }

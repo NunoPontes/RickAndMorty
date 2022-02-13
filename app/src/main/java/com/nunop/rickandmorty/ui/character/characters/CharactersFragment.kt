@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
+import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharactersFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
+import com.nunop.rickandmorty.utils.autoFitColumns
 import kotlinx.coroutines.flow.collectLatest
+
 
 @ExperimentalPagingApi
 class CharactersFragment : BaseFragment(), CharacterAdapter
@@ -37,16 +40,27 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
 
         val adapter = CharacterAdapter(context, this)
 
+        val columnWidth =
+            (resources.getDimension(R.dimen.image_size) / resources.displayMetrics.density).toInt()
+        val marginWidth =
+            (resources.getDimension(R.dimen.margin_normal) / resources.displayMetrics.density).toInt()
+        binding.charactersList.autoFitColumns(columnWidth + marginWidth)
         binding.charactersList.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(adapter),
             footer = PagingLoadStateAdapter(adapter)
         )
 
         launchOnLifecycleScope {
-            mViewModel.charactersFlow.collectLatest {
+
+            mViewModel.charactersFlow.data?.collectLatest {
+                hideLoading()
                 adapter.submitData(it)
             }
         }
+    }
+
+    private fun hideLoading() {
+        binding.ltMorty.visibility = View.GONE
     }
 
     override fun onDestroyView() {

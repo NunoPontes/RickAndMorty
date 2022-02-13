@@ -8,12 +8,13 @@
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/charactersList"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+		android:layout_height="match_parent"
+		app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
+		tools:spanCount="3"
 		tools:listitem="@layout/character_item_list" />
 	
 	<com.airbnb.lottie.LottieAnimationView
@@ -27,5 +28,5 @@
 		app:lottie_autoPlay="true"
 		app:lottie_loop="true"
 		app:lottie_rawRes="@raw/morty_loading" />
-	
+
 </androidx.constraintlayout.widget.ConstraintLayout>
