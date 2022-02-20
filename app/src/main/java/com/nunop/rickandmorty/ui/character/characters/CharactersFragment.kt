@@ -12,6 +12,7 @@ import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharactersFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
+import com.nunop.rickandmorty.utils.Resource
 import com.nunop.rickandmorty.utils.autoFitColumns
 import kotlinx.coroutines.flow.collectLatest
 
@@ -51,16 +52,64 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         )
 
         launchOnLifecycleScope {
-
-            mViewModel.charactersFlow.data?.collectLatest {
+            when(mViewModel.charactersFlow){
+                is Resource.Success -> {
+                    mViewModel.charactersFlow.data?.collectLatest {
+                        hideLoading()
+                        hideError()
+                        adapter.submitData(it)
+                    }
+                }
+                is Resource.Error -> {
+                    hideLoading()
+                    showError()
+                }
+                is Resource.Loading -> {
+                    hideError()
+                    showLoading()
+                }
+            }
+            mViewModel.
+            charactersFlow.data?.collectLatest {
                 hideLoading()
+                hideError()
                 adapter.submitData(it)
+            }
+        }
+        launchOnLifecycleScope {
+            mViewModel.flowResult.collectLatest {
+                when (it) {
+                    is Resource.Success -> {
+                        hideError()
+                        hideLoading()
+                    }
+                    is Resource.Error -> {
+                        hideLoading()
+                        showError()
+                    }
+                    is Resource.Loading -> {
+                        hideError()
+                        showLoading()
+                    }
+                }
             }
         }
     }
 
     private fun hideLoading() {
         binding.ltMorty.visibility = View.GONE
+    }
+    //TODO: create function/extension to hide/show views
+    private fun showLoading(){
+        binding.ltMorty.visibility = View.VISIBLE
+    }
+
+    private fun showError(){
+        binding.ltNoInternet.visibility = View.VISIBLE
+    }
+
+    private fun hideError(){
+        binding.ltNoInternet.visibility = View.GONE
     }
 
     override fun onDestroyView() {

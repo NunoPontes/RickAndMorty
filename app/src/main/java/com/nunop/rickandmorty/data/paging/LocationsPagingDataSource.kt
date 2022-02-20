@@ -6,16 +6,18 @@ import androidx.paging.PagingState
 import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.toLocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class LocationsPagingDataSource(private val localDataSource: LocalDataSource) :
+class LocationsPagingDataSource(private val remoteDataSource: RemoteDataSource,
+                                private val localDataSource: LocalDataSource) :
     PagingSource<Int, ResultLocation>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultLocation> {
         val pageNumber = params.key ?: 1
         return try {
-            val response = RetrofitInstance.api.getLocations(pageNumber)
+            val response = remoteDataSource.getLocations(pageNumber)
             val pagedResponse = response.body()
             val data = pagedResponse?.results
 

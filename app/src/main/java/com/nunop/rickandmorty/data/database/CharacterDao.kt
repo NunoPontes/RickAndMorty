@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.*
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeCrossRef
+import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 @Dao

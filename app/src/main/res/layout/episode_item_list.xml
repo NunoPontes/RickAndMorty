@@ -4,55 +4,34 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="?selectableItemBackground">
+	android:layout_marginVertical="@dimen/margin_normal"
+	android:padding="@dimen/margin_normal"
+	android:background="@drawable/et_background">
 	
 	<TextView
 		android:id="@+id/tvName"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintHorizontal_bias="0.0"
-		app:layout_constraintStart_toEndOf="@+id/ivPhoto"
-		app:layout_constraintTop_toTopOf="parent"
-		tools:text="Date" />
-	
-	<TextView
-		android:id="@+id/tvType"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintStart_toEndOf="@+id/ivPhoto"
-		app:layout_constraintStart_toStartOf="@+id/tvSpecies"
-		app:layout_constraintTop_toBottomOf="@+id/tvSpecies"
-		tools:text="Date" />
-	
-	<TextView
-		android:id="@+id/tvGender"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toTopOf="@+id/tvSpecies"
-		app:layout_constraintStart_toEndOf="@+id/ivPhoto"
-		app:layout_constraintStart_toStartOf="@+id/tvName"
-		app:layout_constraintTop_toBottomOf="@+id/tvName"
-		tools:text="Date" />
-	
-	<TextView
-		android:id="@+id/tvSpecies"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		app:layout_constraintBottom_toTopOf="@+id/tvType"
-		app:layout_constraintStart_toEndOf="@+id/ivPhoto"
-		app:layout_constraintStart_toStartOf="@+id/tvGender"
-		app:layout_constraintTop_toBottomOf="@+id/tvGender"
-		tools:text="Date" />
-	
-	<ImageView
-		android:id="@+id/ivPhoto"
-		android:layout_width="100dp"
-		android:layout_height="100dp"
-		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
-		tools:srcCompat="@tools:sample/avatars" />
+		tools:text="Date" />
+	
+	<TextView
+		android:id="@+id/tvAirDate"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintTop_toBottomOf="@+id/tvName"
+		app:layout_constraintStart_toStartOf="parent"
+		tools:layout_editor_absoluteX="100dp"
+		tools:text="Date" />
+	
+	<TextView
+		android:id="@+id/tvEpisode"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/tvAirDate"
+		tools:layout_editor_absoluteX="100dp"
+		tools:text="Date" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

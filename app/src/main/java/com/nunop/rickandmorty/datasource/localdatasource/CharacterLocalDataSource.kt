@@ -3,6 +3,7 @@ package com.nunop.rickandmorty.datasource.localdatasource
 import androidx.paging.PagingSource
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeCrossRef
+import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface CharacterLocalDataSource {

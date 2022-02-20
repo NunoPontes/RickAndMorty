@@ -38,7 +38,8 @@ class EpisodeAdapter(private val episodeClickListener: OnEpisodeClickListener) :
 
         fun bind(item: Episode) = binding.apply {
             tvName.text = item.name
-            tvGender.text = item.air_date
+            tvAirDate.text = item.air_date
+            tvEpisode.text = item.episode
         }
 
         override fun onClick(p0: View?) {

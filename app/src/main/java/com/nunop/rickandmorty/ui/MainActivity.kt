@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         val repositoryLocation = LocationRepositoryImpl(
             localDataSource,
-            LocationsPagingDataSource(localDataSource),
+            LocationsPagingDataSource(remoteDataSource, localDataSource),
             remoteDataSource
         )
         val viewModelLocationsProviderFactory =

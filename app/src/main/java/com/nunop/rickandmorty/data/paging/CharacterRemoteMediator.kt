@@ -1,16 +1,17 @@
 package com.nunop.rickandmorty.data.paging
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.LoadType
-import androidx.paging.PagingState
-import androidx.paging.RemoteMediator
+import androidx.paging.*
 import androidx.room.withTransaction
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.database.entities.CharacterRemoteKey
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.STARTING_PAGE_INDEX
+import com.nunop.rickandmorty.utils.Error
+import com.nunop.rickandmorty.utils.Resource
 import com.nunop.rickandmorty.utils.toListCharacters
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import okio.IOException
 import retrofit2.HttpException
 
@@ -19,6 +20,11 @@ class CharacterRemoteMediator(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : RemoteMediator<Int, Character>() {
+
+    private val mutableFlowResults = MutableSharedFlow<Resource<Character?>>()
+
+    val flowResults: Flow<Resource<Character?>>
+        get() = mutableFlowResults
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -53,10 +59,16 @@ class CharacterRemoteMediator(
                 response.body()?.results?.toListCharacters()
                     ?.let { localDataSource.insertAllCharacters(it) }
             }
+            mutableFlowResults.emit(Resource.Success(null))
             return MediatorResult.Success(endOfPaginationReached = isEndOfList)
         } catch (exception: IOException) {
+            mutableFlowResults.emit(Resource.Error(Error.GENERIC.error))
             return MediatorResult.Error(exception)
         } catch (exception: HttpException) {
+            mutableFlowResults.emit(Resource.Error(Error.GENERIC.error))
+            return MediatorResult.Error(exception)
+        } catch (exception: Exception){
+            mutableFlowResults.emit(Resource.Error(Error.GENERIC.error))
             return MediatorResult.Error(exception)
         }
     }

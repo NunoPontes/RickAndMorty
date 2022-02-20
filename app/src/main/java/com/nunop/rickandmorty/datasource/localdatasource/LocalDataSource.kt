@@ -8,6 +8,7 @@ import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeC
 import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
 import com.nunop.rickandmorty.data.database.entities.relations.LocationCharacterCrossRef
 import com.nunop.rickandmorty.data.database.entities.relations.LocationWithCharacters
+import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource(private val db: Database) :

@@ -36,10 +36,9 @@ class LocationDetailsFragment : BaseFragment() {
         val localDataSource = LocalDataSource(databaseInstance)
         val repositoryLocation = LocationRepositoryImpl(
             localDataSource,
-            LocationsPagingDataSource(localDataSource),
+            LocationsPagingDataSource(remoteDataSource, localDataSource),
             remoteDataSource
         )
-
 
         val args: LocationDetailsFragmentArgs by navArgs()
         val locationId = args.locationId

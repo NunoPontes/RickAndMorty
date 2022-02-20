@@ -19,13 +19,17 @@ class CharactersViewModel(
     val charactersFlow: Resource<Flow<PagingData<Character>>>
         get() = _charactersFlow
 
+    var flowResult: Flow<Resource<Character?>>
+
     init {
         getAllCharacters()
+        flowResult = repository.getFlowResults() //TODO
     }
 
     private fun getAllCharacters() = launchPagingAsync({
         repository.getCharactersFromMediator().cachedIn(viewModelScope)
     }, {
-        _charactersFlow = Resource.Success(it)
+        _charactersFlow = Resource.Success(it) //TODO: add verification for possible error, not
+    // only success
     })
 }

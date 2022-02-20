@@ -5,6 +5,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.database.entities.Character
+import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
@@ -17,4 +18,6 @@ interface CharacterRepository {
     suspend fun getCharacterByIdDb(characterId: Int): Character?
 
     suspend fun getCharacterById(characterId: Int, context: Context?): Character?
+
+    fun getFlowResults(): Flow<Resource<Character?>>
 }

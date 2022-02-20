@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.Database
@@ -52,7 +53,13 @@ class CharacterDetailsFragment : BaseFragment() {
 
             when (response) {
                 is Resource.Success -> {
-                    binding.textView2.text = response.data?.name
+                    binding.apply {
+                        context?.let {
+                            Glide.with(it)
+                                .load(response.data?.image)
+                                .into(ivPhoto)
+                        }
+                    }
                 }
                 is Resource.Error -> {
                     //TODO:

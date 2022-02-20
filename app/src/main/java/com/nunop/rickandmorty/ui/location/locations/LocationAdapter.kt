@@ -40,7 +40,8 @@ class LocationAdapter(private val locationClickListener: OnLocationClickListener
 
         fun bind(item: ResultLocation) = binding.apply {
             tvName.text = item.name
-            tvGender.text = item.type
+            tvType.text = item.type
+            tvDimension.text = item.dimension
         }
 
         override fun onClick(p0: View?) {

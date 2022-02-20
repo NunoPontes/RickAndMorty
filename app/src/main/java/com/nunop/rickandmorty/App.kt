@@ -6,6 +6,9 @@ class App : Application()
 
 //Things to do:
 //- Add error states
+//- Add styles
+//- Process dead
+//- Dependency injection
 //- Search option
 //- Filter (that applies on the list and on search)
 //- Location details
