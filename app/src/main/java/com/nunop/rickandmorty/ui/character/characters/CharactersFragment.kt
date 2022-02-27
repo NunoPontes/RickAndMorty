@@ -140,11 +140,11 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
                     showLoading(false)
                     showErrorGeneric(true)
                     showErrorNoInternet(false)
-                } else if(loadStates.mediator?.refresh is LoadState.Loading){
+                } else if (loadStates.mediator?.refresh is LoadState.Loading) {
                     showErrorGeneric(false)
                     showErrorNoInternet(false)
                     showLoading(true)
-                } else if(loadStates.mediator?.refresh is LoadState.NotLoading){
+                } else if (loadStates.mediator?.refresh is LoadState.NotLoading) {
                     showErrorGeneric(false)
                     showErrorNoInternet(false)
                     showLoading(false)

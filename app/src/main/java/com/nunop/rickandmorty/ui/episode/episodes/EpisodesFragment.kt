@@ -10,7 +10,6 @@ import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.databinding.EpisodesFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
-import com.nunop.rickandmorty.ui.location.locations.LocationsFragment
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import kotlinx.coroutines.flow.collectLatest
 

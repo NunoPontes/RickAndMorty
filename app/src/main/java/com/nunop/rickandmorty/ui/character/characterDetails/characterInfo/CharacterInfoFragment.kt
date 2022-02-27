@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.databinding.CharacterInfoFragmentBinding
-import com.nunop.rickandmorty.ui.episode.episodes.EpisodesFragment
 
 class CharacterInfoFragment : BaseFragment() {
 

@@ -27,6 +27,6 @@ class CharactersViewModel(
         repository.getCharactersFromMediator().cachedIn(viewModelScope)
     }, {
         _charactersFlow = Resource.Success(it) //TODO: add verification for possible error, not
-    // only success
+        // only success
     })
 }
