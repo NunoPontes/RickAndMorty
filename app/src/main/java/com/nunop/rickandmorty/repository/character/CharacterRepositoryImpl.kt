@@ -10,17 +10,17 @@ import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.utils.*
+import com.nunop.rickandmorty.utils.Constants
+import com.nunop.rickandmorty.utils.Utilities
+import com.nunop.rickandmorty.utils.toCharacter
+import com.nunop.rickandmorty.utils.toCharacterEpisodeCrossRefList
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import retrofit2.Response
 
 class CharacterRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : CharacterRepository {
-
-    private lateinit var mutableFlowResults: Flow<Resource<Character?>>
 
     @ExperimentalPagingApi
     override fun getCharactersFromMediator(): Flow<PagingData<Character>> {
@@ -30,7 +30,6 @@ class CharacterRepositoryImpl(
             remoteDataSource,
             localDataSource
         )
-        mutableFlowResults = remoteMediator.flowResults
 
         return Pager(
             config = PagingConfig(
@@ -71,9 +70,5 @@ class CharacterRepositoryImpl(
         } else {
             return localDataSource.getCharacterById(characterId)
         }
-    }
-
-    override fun getFlowResults(): Flow<Resource<Character?>> {
-        return mutableFlowResults
     }
 }

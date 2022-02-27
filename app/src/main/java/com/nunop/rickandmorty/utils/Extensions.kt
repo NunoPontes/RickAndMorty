@@ -1,6 +1,7 @@
 package com.nunop.rickandmorty.utils
 
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -155,3 +156,8 @@ fun RecyclerView.autoFitColumns(columnWidth: Int) {
     val noOfColumns = ((displayMetrics.widthPixels / displayMetrics.density) / columnWidth).toInt()
     this.layoutManager = GridLayoutManager(this.context, noOfColumns)
 }
+
+/**
+ * Converts the true/false of a boolean value in View.Visible or View.Gone
+ */
+fun Boolean.toVisibilityGone() = if (this) View.VISIBLE else View.GONE

@@ -34,20 +34,19 @@
 				tools:srcCompat="@tools:sample/avatars" />
 			
 		</com.google.android.material.appbar.CollapsingToolbarLayout>
+		<com.google.android.material.tabs.TabLayout
+			android:id="@+id/tabLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior"
+			app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+			app:tabIndicatorFullWidth="true" />
 	</com.google.android.material.appbar.AppBarLayout>
 	
-	<com.google.android.material.tabs.TabLayout
-		android:id="@+id/tabLayout"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"
-		app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-		app:tabIndicatorFullWidth="true" />
-	
-	<androidx.viewpager.widget.ViewPager
+	<androidx.viewpager2.widget.ViewPager2
 		android:id="@+id/tabViewpager"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="match_parent"
 		android:fillViewport="true"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

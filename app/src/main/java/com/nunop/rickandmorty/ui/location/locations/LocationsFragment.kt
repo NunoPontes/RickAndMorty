@@ -21,6 +21,12 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
 
     private lateinit var mViewModel: LocationsViewModel
 
+    companion object {
+        fun newInstance(): LocationsFragment {
+            return LocationsFragment()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

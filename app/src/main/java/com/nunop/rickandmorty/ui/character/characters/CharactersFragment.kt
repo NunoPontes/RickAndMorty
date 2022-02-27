@@ -6,15 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharactersFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
-import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
-import com.nunop.rickandmorty.utils.Resource
-import com.nunop.rickandmorty.utils.autoFitColumns
+import com.nunop.rickandmorty.utils.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import retrofit2.HttpException
+import java.net.UnknownHostException
 
 
 @ExperimentalPagingApi
@@ -24,6 +26,8 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
     // from api and db
     private var _binding: CharactersFragmentBinding? = null
     private val binding get() = _binding!!
+
+    private val utilities = Utilities()
 
     private lateinit var mViewModel: CharactersViewModel
 
@@ -40,6 +44,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         mViewModel = (activity as MainActivity).mCharactersViewModel
 
         val adapter = CharacterAdapter(context, this)
+        collectLoadStates(adapter)
 
         val columnWidth =
             (resources.getDimension(R.dimen.image_size) / resources.displayMetrics.density).toInt()
@@ -51,65 +56,14 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
             footer = PagingLoadStateAdapter(adapter)
         )
 
-        launchOnLifecycleScope {
-            when(mViewModel.charactersFlow){
-                is Resource.Success -> {
-                    mViewModel.charactersFlow.data?.collectLatest {
-                        hideLoading()
-                        hideError()
-                        adapter.submitData(it)
-                    }
-                }
-                is Resource.Error -> {
-                    hideLoading()
-                    showError()
-                }
-                is Resource.Loading -> {
-                    hideError()
-                    showLoading()
-                }
-            }
-            mViewModel.
-            charactersFlow.data?.collectLatest {
-                hideLoading()
-                hideError()
-                adapter.submitData(it)
+        binding.swipeCharacters.apply {
+            setOnRefreshListener {
+                adapter.refresh()
+                this.isRefreshing = false
             }
         }
-        launchOnLifecycleScope {
-            mViewModel.flowResult.collectLatest {
-                when (it) {
-                    is Resource.Success -> {
-                        hideError()
-                        hideLoading()
-                    }
-                    is Resource.Error -> {
-                        hideLoading()
-                        showError()
-                    }
-                    is Resource.Loading -> {
-                        hideError()
-                        showLoading()
-                    }
-                }
-            }
-        }
-    }
 
-    private fun hideLoading() {
-        binding.ltMorty.visibility = View.GONE
-    }
-    //TODO: create function/extension to hide/show views
-    private fun showLoading(){
-        binding.ltMorty.visibility = View.VISIBLE
-    }
-
-    private fun showError(){
-        binding.ltNoInternet.visibility = View.VISIBLE
-    }
-
-    private fun hideError(){
-        binding.ltNoInternet.visibility = View.GONE
+        collectFlowCharacters(adapter)
     }
 
     override fun onDestroyView() {
@@ -130,4 +84,76 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         }
     }
 
+    private fun showLoading(show: Boolean) {
+        binding.ltMorty.visibility = show.toVisibilityGone()
+    }
+
+    private fun showErrorGeneric(show: Boolean) {
+        binding.ltGenericError.visibility = show.toVisibilityGone()
+    }
+
+    private fun showErrorNoInternet(show: Boolean) {
+        binding.ltNoInternet.visibility = show.toVisibilityGone()
+    }
+
+    private fun collectFlowCharacters(adapter: CharacterAdapter) {
+        //TODO: remove?
+        launchOnLifecycleScope {
+            when (mViewModel.charactersFlow) {
+                is Resource.Success -> {
+                    mViewModel.charactersFlow.data?.collectLatest {
+                        showLoading(false)
+                        showErrorGeneric(false)
+                        showErrorNoInternet(false)
+                        adapter.submitData(it)
+                    }
+                }
+//                is Resource.Error -> {
+//                    showLoading(false)
+//                    showErrorGeneric(true)
+//                    showErrorNoInternet(false)
+//                }
+//                is Resource.Loading -> {
+//                    showErrorGeneric(false)
+//                    showErrorNoInternet(false)
+//                    showLoading(true)
+//                }
+            }
+        }
+    }
+
+    private fun collectLoadStates(adapter: CharacterAdapter) {
+        launchOnLifecycleScope {
+            adapter.loadStateFlow.collect { loadStates ->
+                val hasInternetConnection = context?.let { utilities.hasInternetConnection(it) }
+                val error = (loadStates.mediator?.refresh as? LoadState.Error)?.error
+                if ((error is HttpException || error is UnknownHostException) &&
+                    adapter.snapshot().items.isEmpty() &&
+                    hasInternetConnection == false
+                ) {
+                    showLoading(false)
+                    showErrorNoInternet(true)
+                    showErrorGeneric(false)
+                } else if (error is Exception &&
+                    adapter.snapshot().items.isEmpty()
+                ) {
+                    showLoading(false)
+                    showErrorGeneric(true)
+                    showErrorNoInternet(false)
+                } else if(loadStates.mediator?.refresh is LoadState.Loading){
+                    showErrorGeneric(false)
+                    showErrorNoInternet(false)
+                    showLoading(true)
+                } else if(loadStates.mediator?.refresh is LoadState.NotLoading){
+                    showErrorGeneric(false)
+                    showErrorNoInternet(false)
+                    showLoading(false)
+                } else {
+                    showLoading(false)
+                    showErrorGeneric(false)
+                    showErrorNoInternet(false)
+                }
+            }
+        }
+    }
 }
