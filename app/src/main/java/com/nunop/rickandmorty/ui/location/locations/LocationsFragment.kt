@@ -22,7 +22,7 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
     private lateinit var mViewModel: LocationsViewModel
 
     companion object {
-        fun newInstance(): LocationsFragment {
+        fun newInstance(characterId: Int): LocationsFragment {
             return LocationsFragment()
         }
     }

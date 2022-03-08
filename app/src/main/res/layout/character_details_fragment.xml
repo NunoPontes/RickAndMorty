@@ -16,7 +16,7 @@
 		<com.google.android.material.appbar.CollapsingToolbarLayout
 			android:id="@+id/collapseToolbar"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="300dp"
 			app:contentScrim="?attr/colorPrimary"
 			app:layout_scrollFlags="scroll|exitUntilCollapsed"
 			app:titleEnabled="false">
@@ -32,8 +32,9 @@
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toTopOf="parent"
 				tools:srcCompat="@tools:sample/avatars" />
-			
+		
 		</com.google.android.material.appbar.CollapsingToolbarLayout>
+		
 		<com.google.android.material.tabs.TabLayout
 			android:id="@+id/tabLayout"
 			android:layout_width="match_parent"

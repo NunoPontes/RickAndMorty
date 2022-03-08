@@ -54,14 +54,13 @@ class CharacterDetailsFragment : BaseFragment() {
 
         characterDetailsViewModel(repositoryCharacter)
 
-        setTabs()
+        setTabs(characterId)
 
         launchOnLifecycleScope {
             mCharacterDetailsViewModel.getCharacterById(characterId)
         }
 
         mCharacterDetailsViewModel.characterLiveData.observe(viewLifecycleOwner) { response ->
-
             when (response) {
                 is Resource.Success -> {
                     binding.apply {
@@ -92,20 +91,20 @@ class CharacterDetailsFragment : BaseFragment() {
     }
 
     private fun characterDetailsViewModel(repositoryCharacter: CharacterRepository) {
-        activity?.application?.let {
+        activity?.let {
             val viewModelCharacterDetailsProviderFactory =
-                CharacterDetailsViewModelProviderFactory(it, repositoryCharacter)
+                CharacterDetailsViewModelProviderFactory(it.application, repositoryCharacter)
             mCharacterDetailsViewModel =
                 ViewModelProvider(
-                    this,
+                    it,
                     viewModelCharacterDetailsProviderFactory
                 )[CharacterDetailsViewModel::class.java]
         }
     }
 
-    private fun setTabs() {
+    private fun setTabs(characterId: Int) {
         val tabAdapter =
-            activity?.let { TabAdapter(it) }
+            activity?.let { TabAdapter(it, characterId) }
         binding.tabViewpager.adapter = tabAdapter
         binding.tabViewpager.registerOnPageChangeCallback(myPageChangeCallback)
 

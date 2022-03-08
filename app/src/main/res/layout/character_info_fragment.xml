@@ -14,5 +14,5 @@
 		app:layout_constraintTop_toTopOf="parent"
 		android:text="aaaaaaaa"
 		tools:text="Rick Sanchez" />
-	
+
 </androidx.constraintlayout.widget.ConstraintLayout>

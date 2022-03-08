@@ -9,7 +9,7 @@ import com.nunop.rickandmorty.ui.episode.episodes.EpisodesFragment
 import com.nunop.rickandmorty.ui.location.locations.LocationsFragment
 
 @ExperimentalPagingApi
-class TabAdapter(fa: FragmentActivity) :
+class TabAdapter(fa: FragmentActivity, private val characterId: Int) :
     FragmentStateAdapter(fa) {
 
     //TODO: find better way to avoid hardcoded values, pass a list in the arguments?
@@ -23,12 +23,12 @@ class TabAdapter(fa: FragmentActivity) :
                 CharacterInfoFragment.newInstance()
             }
             1 -> {
-                LocationsFragment.newInstance()
+                LocationsFragment.newInstance(characterId)
             }
             2 -> {
-                EpisodesFragment.newInstance()
+                EpisodesFragment.newInstance(characterId)
             }
-            else -> LocationsFragment.newInstance()
+            else -> LocationsFragment.newInstance(characterId)
         }
     }
 }
