@@ -15,6 +15,7 @@ import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.repository.episode.EpisodeRepository
 import com.nunop.rickandmorty.repository.episode.EpisodeRepositoryImpl
 import com.nunop.rickandmorty.utils.Resource
+import com.nunop.rickandmorty.utils.toVisibilityGone
 
 class EpisodeDetailsFragment : BaseFragment() {
 
@@ -55,10 +56,12 @@ class EpisodeDetailsFragment : BaseFragment() {
                     binding.textView2.text = response.data?.name
                 }
                 is Resource.Error -> {
-                    //TODO:
+                    showLoading(false)
+                    showErrorGeneric(true)
                 }
                 is Resource.Loading -> {
-                    //TODO:
+                    showErrorGeneric(false)
+                    showLoading(true)
                 }
             }
         }
@@ -83,4 +86,11 @@ class EpisodeDetailsFragment : BaseFragment() {
         }
     }
 
+    private fun showLoading(show: Boolean) {
+        binding.ltMorty.visibility = show.toVisibilityGone()
+    }
+
+    private fun showErrorGeneric(show: Boolean) {
+        binding.ltGenericError.visibility = show.toVisibilityGone()
+    }
 }

@@ -32,7 +32,7 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
 
     private lateinit var mCharacterDetailsViewModel: CharacterDetailsViewModel
     private lateinit var mEpisodesViewModel: EpisodesViewModel
-
+    //TODO: add error, loading
     companion object {
         fun newInstance(characterId: Int): EpisodesFragment {
             return EpisodesFragment()
@@ -63,6 +63,13 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
         launchOnLifecycleScope {
             mEpisodesViewModel.episodesFlow.collectLatest {
                 adapter.submitData(it)
+            }
+        }
+
+        binding.swipeEpisodes.apply {
+            setOnRefreshListener {
+                adapter.refresh()
+                this.isRefreshing = false
             }
         }
     }

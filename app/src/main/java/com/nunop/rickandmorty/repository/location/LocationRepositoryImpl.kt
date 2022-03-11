@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.Flow
 
 class LocationRepositoryImpl(
     private val localDataSource: LocalDataSource,
-    private val locationsPagingDataSource: LocationsPagingDataSource,
     private val remoteDataSource: RemoteDataSource
 ) : LocationRepository {
 
@@ -29,7 +28,7 @@ class LocationRepositoryImpl(
 
     override suspend fun getAllLocations(): Flow<PagingData<ResultLocation>> = Pager(
         config = PagingConfig(pageSize = 20, prefetchDistance = 2),
-        pagingSourceFactory = { locationsPagingDataSource }
+        pagingSourceFactory = { LocationsPagingDataSource(remoteDataSource, localDataSource) }
     ).flow
 
 

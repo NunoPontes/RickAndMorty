@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Character
@@ -15,8 +17,6 @@ import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import retrofit2.HttpException
-import java.net.UnknownHostException
 
 
 @ExperimentalPagingApi
@@ -44,7 +44,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         mViewModel = (activity as MainActivity).mCharactersViewModel
 
         val adapter = CharacterAdapter(context, this)
-        collectLoadStates(adapter)
+        collectLoadStates(adapter as PagingDataAdapter<Any, RecyclerView.ViewHolder>)
 
         val columnWidth =
             (resources.getDimension(R.dimen.image_size) / resources.displayMetrics.density).toInt()
@@ -122,37 +122,20 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         }
     }
 
-    private fun collectLoadStates(adapter: CharacterAdapter) {
+    private fun collectLoadStates(adapter: PagingDataAdapter<Any, RecyclerView.ViewHolder>) {
         launchOnLifecycleScope {
             adapter.loadStateFlow.collect { loadStates ->
                 val hasInternetConnection = context?.let { utilities.hasInternetConnection(it) }
                 val error = (loadStates.mediator?.refresh as? LoadState.Error)?.error
-                if ((error is HttpException || error is UnknownHostException) &&
-                    adapter.snapshot().items.isEmpty() &&
-                    hasInternetConnection == false
-                ) {
-                    showLoading(false)
-                    showErrorNoInternet(true)
-                    showErrorGeneric(false)
-                } else if (error is Exception &&
-                    adapter.snapshot().items.isEmpty()
-                ) {
-                    showLoading(false)
-                    showErrorGeneric(true)
-                    showErrorNoInternet(false)
-                } else if (loadStates.mediator?.refresh is LoadState.Loading) {
-                    showErrorGeneric(false)
-                    showErrorNoInternet(false)
-                    showLoading(true)
-                } else if (loadStates.mediator?.refresh is LoadState.NotLoading) {
-                    showErrorGeneric(false)
-                    showErrorNoInternet(false)
-                    showLoading(false)
-                } else {
-                    showLoading(false)
-                    showErrorGeneric(false)
-                    showErrorNoInternet(false)
-                }
+                utilities.checkStates(
+                    error = error,
+                    adapter = adapter,
+                    hasInternetConnection = hasInternetConnection,
+                    loadStates = loadStates,
+                    showLoading = ::showLoading,
+                    showErrorGeneric = ::showErrorGeneric,
+                    showErrorNoInternet = ::showErrorNoInternet
+                )
             }
         }
     }

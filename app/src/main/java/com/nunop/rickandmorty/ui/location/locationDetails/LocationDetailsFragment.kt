@@ -9,13 +9,13 @@ import androidx.navigation.fragment.navArgs
 import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.Database
-import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
 import com.nunop.rickandmorty.databinding.LocationDetailsFragmentBinding
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.repository.location.LocationRepository
 import com.nunop.rickandmorty.repository.location.LocationRepositoryImpl
 import com.nunop.rickandmorty.utils.Resource
+import com.nunop.rickandmorty.utils.toVisibilityGone
 
 class LocationDetailsFragment : BaseFragment() {
 
@@ -36,7 +36,6 @@ class LocationDetailsFragment : BaseFragment() {
         val localDataSource = LocalDataSource(databaseInstance)
         val repositoryLocation = LocationRepositoryImpl(
             localDataSource,
-            LocationsPagingDataSource(remoteDataSource, localDataSource),
             remoteDataSource
         )
 
@@ -57,10 +56,12 @@ class LocationDetailsFragment : BaseFragment() {
                     binding.textView2.text = response.data?.name
                 }
                 is Resource.Error -> {
-                    //TODO:
+                    showLoading(false)
+                    showErrorGeneric(true)
                 }
                 is Resource.Loading -> {
-                    //TODO:
+                    showErrorGeneric(false)
+                    showLoading(true)
                 }
             }
         }
@@ -85,4 +86,11 @@ class LocationDetailsFragment : BaseFragment() {
         }
     }
 
+    private fun showLoading(show: Boolean) {
+        binding.ltMorty.visibility = show.toVisibilityGone()
+    }
+
+    private fun showErrorGeneric(show: Boolean) {
+        binding.ltGenericError.visibility = show.toVisibilityGone()
+    }
 }

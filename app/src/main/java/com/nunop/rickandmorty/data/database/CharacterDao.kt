@@ -20,11 +20,11 @@ interface CharacterDao {
     suspend fun getCharacterById(id: Int): Character?
 
     @Transaction //To ensure this happens atomically
-    @Query("SELECT * FROM character")
+    @Query("SELECT * FROM character ORDER BY id")
     fun getCharacters(): Flow<List<Character>>
 
     @Transaction //To ensure this happens atomically
-    @Query("SELECT * FROM character")
+    @Query("SELECT * FROM character ORDER BY id")
     fun getCharactersPaged(): PagingSource<Int, Character>
 
     @Query("DELETE FROM character")

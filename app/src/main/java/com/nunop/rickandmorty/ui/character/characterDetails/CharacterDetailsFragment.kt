@@ -106,6 +106,7 @@ class CharacterDetailsFragment : BaseFragment() {
         val tabAdapter =
             activity?.let { TabAdapter(it, characterId) }
         binding.tabViewpager.adapter = tabAdapter
+        binding.tabViewpager.isSaveEnabled = false
         binding.tabViewpager.registerOnPageChangeCallback(myPageChangeCallback)
 
         TabLayoutMediator(binding.tabLayout, binding.tabViewpager) { tab, position ->

@@ -21,3 +21,4 @@ class App : Application()
 //- Unit Tests, maximum coverage
 //- UI tests (with usability tests)
 //- Dependency injection Hilt?
+//- UI Compose
