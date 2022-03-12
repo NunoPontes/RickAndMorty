@@ -54,7 +54,7 @@ class CharacterDetailsFragment : BaseFragment() {
 
         characterDetailsViewModel(repositoryCharacter)
 
-        setTabs(characterId)
+        setTabs()
 
         launchOnLifecycleScope {
             mCharacterDetailsViewModel.getCharacterById(characterId)
@@ -102,9 +102,9 @@ class CharacterDetailsFragment : BaseFragment() {
         }
     }
 
-    private fun setTabs(characterId: Int) {
+    private fun setTabs() {
         val tabAdapter =
-            activity?.let { TabAdapter(it, characterId) }
+            activity?.let { TabAdapter(it) }
         binding.tabViewpager.adapter = tabAdapter
         binding.tabViewpager.isSaveEnabled = false
         binding.tabViewpager.registerOnPageChangeCallback(myPageChangeCallback)
@@ -113,12 +113,6 @@ class CharacterDetailsFragment : BaseFragment() {
             when (position) {
                 0 -> {
                     tab.setIcon(R.drawable.ic_people_white_18dp)
-                }
-                1 -> {
-                    tab.setIcon(R.drawable.ic_location_white_18dp)
-                }
-                2 -> {
-                    tab.setIcon(R.drawable.ic_tv_white_18dp)
                 }
             }
         }.attach()

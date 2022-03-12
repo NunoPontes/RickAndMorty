@@ -28,11 +28,6 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
     private val utilities = Utilities()
     private lateinit var mViewModel: LocationsViewModel
     //TODO: add error, loading
-    companion object {
-        fun newInstance(characterId: Int): LocationsFragment {
-            return LocationsFragment()
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -83,7 +83,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
             )
         }
     }
-
+    //TODO: extract this somewhere to avoid duplications
     private fun showLoading(show: Boolean) {
         binding.ltMorty.visibility = show.toVisibilityGone()
     }
