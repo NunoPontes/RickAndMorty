@@ -4,28 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.base.BaseFragment
-import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.databinding.EpisodesFragmentBinding
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.repository.character.CharacterRepository
-import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
 import com.nunop.rickandmorty.ui.MainActivity
-import com.nunop.rickandmorty.ui.character.characterDetails.CharacterDetailsViewModel
-import com.nunop.rickandmorty.ui.character.characterDetails.CharacterDetailsViewModelProviderFactory
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
-import com.nunop.rickandmorty.utils.Resource
 import com.nunop.rickandmorty.utils.Utilities
-import com.nunop.rickandmorty.utils.toVisibilityGone
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 
@@ -37,16 +26,14 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
     private val binding get() = _binding!!
 
     private val utilities = Utilities()
-    private lateinit var mCharacterDetailsViewModel: CharacterDetailsViewModel
     private lateinit var mEpisodesViewModel: EpisodesViewModel
-    //TODO: add error, loading
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = EpisodesFragmentBinding.inflate(inflater, container, false)
-        setupViewModel()
+
         return binding.root
     }
 
@@ -62,27 +49,8 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
             footer = PagingLoadStateAdapter(adapter)
         )
 
-        launchOnLifecycleScope {
-            mEpisodesViewModel.episodesFlow.collectLatest {
-                adapter.submitData(it)
-            }
-        }
-
-        launchOnLifecycleScope {
-            adapter.loadStateFlow.collect { loadStates->
-                val hasInternetConnection = context?.let { utilities.hasInternetConnection(it) }
-                val error = (loadStates.refresh as? LoadState.Error)?.error
-                utilities.checkStates(
-                    error = error,
-                    adapter = adapter as PagingDataAdapter<Any, RecyclerView.ViewHolder>,
-                    hasInternetConnection = hasInternetConnection,
-                    loadStates = loadStates,
-                    showLoading = ::showLoading,
-                    showErrorGeneric = ::showErrorGeneric,
-                    showErrorNoInternet = ::showErrorNoInternet
-                )
-            }
-        }
+        collectFlowEpisodes(adapter)
+        collectLoadStates(adapter)
 
         binding.swipeEpisodes.apply {
             setOnRefreshListener {
@@ -107,55 +75,45 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
         }
     }
 
-    private fun characterDetailsViewModel(repositoryCharacter: CharacterRepository) {
-        activity?.let {
-            val viewModelCharacterDetailsProviderFactory =
-                CharacterDetailsViewModelProviderFactory(it.application, repositoryCharacter)
-            mCharacterDetailsViewModel =
-                ViewModelProvider(
-                    it,
-                    viewModelCharacterDetailsProviderFactory
-                )[CharacterDetailsViewModel::class.java]
-        }
-    }
-
-    private fun setupViewModel() {
-        val databaseInstance = Database.getInstance(requireContext())
-        val remoteDataSource = RemoteDataSource(RetrofitInstance.api)
-        val localDataSource = LocalDataSource(databaseInstance)
-        val repositoryCharacter =
-            CharacterRepositoryImpl(remoteDataSource, localDataSource)
-
-        characterDetailsViewModel(repositoryCharacter)
-
-        mCharacterDetailsViewModel.characterLiveData.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Resource.Success -> {
-                    binding.apply {
-                        response.data?.id
-                        //TODO: get from CharacterEpisodeCrossRef episodeId using characterId,
-                    }
-                }
-                is Resource.Error -> {
-                    //TODO:
-                }
-                is Resource.Loading -> {
-                    //TODO:
-                }
+    @Suppress("UNCHECKED_CAST")
+    private fun collectLoadStates(adapter: EpisodeAdapter) {
+        launchOnLifecycleScope {
+            adapter.loadStateFlow.collect { loadStates ->
+                val hasInternetConnection = context?.let { utilities.hasInternetConnection(it) }
+                val error = (loadStates.refresh as? LoadState.Error)?.error
+                utilities.checkStates(
+                    error = error,
+                    adapter = adapter as PagingDataAdapter<Any, RecyclerView.ViewHolder>,
+                    hasInternetConnection = hasInternetConnection,
+                    loadStates = loadStates,
+                    showLoading = ::showLoading,
+                    showErrorGeneric = ::showErrorGeneric,
+                    showErrorNoInternet = ::showErrorNoInternet
+                )
             }
         }
     }
 
-    //TODO: extract this somewhere to avoid duplications
+    private fun collectFlowEpisodes(adapter: EpisodeAdapter) {
+        launchOnLifecycleScope {
+            mEpisodesViewModel.episodesFlow.collectLatest {
+                showLoading(false)
+                showErrorGeneric(false)
+                showErrorNoInternet(false)
+                adapter.submitData(it)
+            }
+        }
+    }
+
     private fun showLoading(show: Boolean) {
-        binding.ltMorty.visibility = show.toVisibilityGone()
+        binding.customError.showLoading(show)
     }
 
     private fun showErrorGeneric(show: Boolean) {
-        binding.ltGenericError.visibility = show.toVisibilityGone()
+        binding.customError.showErrorGeneric(show)
     }
 
     private fun showErrorNoInternet(show: Boolean) {
-        binding.ltNoInternet.visibility = show.toVisibilityGone()
+        binding.customError.showErrorNoInternet(show)
     }
 }

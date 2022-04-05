@@ -7,7 +7,6 @@ import androidx.paging.cachedIn
 import com.nunop.rickandmorty.base.BaseViewModel
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.repository.character.CharacterRepository
-import com.nunop.rickandmorty.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 @ExperimentalPagingApi
@@ -15,8 +14,8 @@ class CharactersViewModel(
     private val repository: CharacterRepository
 ) : BaseViewModel() {
 
-    private lateinit var _charactersFlow: Resource<Flow<PagingData<Character>>>
-    val charactersFlow: Resource<Flow<PagingData<Character>>>
+    private lateinit var _charactersFlow: Flow<PagingData<Character>>
+    val charactersFlow: Flow<PagingData<Character>>
         get() = _charactersFlow
 
     init {
@@ -26,7 +25,6 @@ class CharactersViewModel(
     private fun getAllCharacters() = launchPagingAsync({
         repository.getCharactersFromMediator().cachedIn(viewModelScope)
     }, {
-        _charactersFlow = Resource.Success(it) //TODO: add verification for possible error, not
-        // only success
+        _charactersFlow = it
     })
 }

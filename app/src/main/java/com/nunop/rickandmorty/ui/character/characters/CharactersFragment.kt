@@ -14,7 +14,9 @@ import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharactersFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
-import com.nunop.rickandmorty.utils.*
+import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
+import com.nunop.rickandmorty.utils.Utilities
+import com.nunop.rickandmorty.utils.autoFitColumns
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 
@@ -44,7 +46,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         mViewModel = (activity as MainActivity).mCharactersViewModel
 
         val adapter = CharacterAdapter(context, this)
-        collectLoadStates(adapter as PagingDataAdapter<Any, RecyclerView.ViewHolder>)
+        collectLoadStates(adapter)
 
         val columnWidth =
             (resources.getDimension(R.dimen.image_size) / resources.displayMetrics.density).toInt()
@@ -83,53 +85,39 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
             )
         }
     }
-    //TODO: extract this somewhere to avoid duplications
+
     private fun showLoading(show: Boolean) {
-        binding.ltMorty.visibility = show.toVisibilityGone()
+        binding.customError.showLoading(show)
     }
 
     private fun showErrorGeneric(show: Boolean) {
-        binding.ltGenericError.visibility = show.toVisibilityGone()
+        binding.customError.showErrorGeneric(show)
     }
 
     private fun showErrorNoInternet(show: Boolean) {
-        binding.ltNoInternet.visibility = show.toVisibilityGone()
+        binding.customError.showErrorNoInternet(show)
     }
 
     private fun collectFlowCharacters(adapter: CharacterAdapter) {
-        //TODO: remove?
         launchOnLifecycleScope {
-            when (mViewModel.charactersFlow) {
-                is Resource.Success -> {
-                    mViewModel.charactersFlow.data?.collectLatest {
-                        showLoading(false)
-                        showErrorGeneric(false)
-                        showErrorNoInternet(false)
-                        adapter.submitData(it)
-                    }
-                }
-//                is Resource.Error -> {
-//                    showLoading(false)
-//                    showErrorGeneric(true)
-//                    showErrorNoInternet(false)
-//                }
-//                is Resource.Loading -> {
-//                    showErrorGeneric(false)
-//                    showErrorNoInternet(false)
-//                    showLoading(true)
-//                }
+            mViewModel.charactersFlow.collectLatest {
+                showLoading(false)
+                showErrorGeneric(false)
+                showErrorNoInternet(false)
+                adapter.submitData(it)
             }
         }
     }
 
-    private fun collectLoadStates(adapter: PagingDataAdapter<Any, RecyclerView.ViewHolder>) {
+    @Suppress("UNCHECKED_CAST")
+    private fun collectLoadStates(adapter: CharacterAdapter) {
         launchOnLifecycleScope {
             adapter.loadStateFlow.collect { loadStates ->
                 val hasInternetConnection = context?.let { utilities.hasInternetConnection(it) }
                 val error = (loadStates.mediator?.refresh as? LoadState.Error)?.error
                 utilities.checkStates(
                     error = error,
-                    adapter = adapter,
+                    adapter = adapter as PagingDataAdapter<Any, RecyclerView.ViewHolder>,
                     hasInternetConnection = hasInternetConnection,
                     loadStates = loadStates,
                     showLoading = ::showLoading,

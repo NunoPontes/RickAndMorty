@@ -15,7 +15,6 @@ import com.nunop.rickandmorty.databinding.LocationsFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import com.nunop.rickandmorty.utils.Utilities
-import com.nunop.rickandmorty.utils.toVisibilityGone
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 
@@ -27,7 +26,6 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
 
     private val utilities = Utilities()
     private lateinit var mViewModel: LocationsViewModel
-    //TODO: add error, loading
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,25 +41,8 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
 
         val adapter = LocationAdapter(this)
 
-        launchOnLifecycleScope {
-            mViewModel.locationsFlow.collectLatest { adapter.submitData(it) }
-        }
-
-        launchOnLifecycleScope {
-            adapter.loadStateFlow.collect { loadStates->
-                val hasInternetConnection = context?.let { utilities.hasInternetConnection(it) }
-                val error = (loadStates.refresh as? LoadState.Error)?.error
-                utilities.checkStates(
-                    error = error,
-                    adapter = adapter as PagingDataAdapter<Any, RecyclerView.ViewHolder>,
-                    hasInternetConnection = hasInternetConnection,
-                    loadStates = loadStates,
-                    showLoading = ::showLoading,
-                    showErrorGeneric = ::showErrorGeneric,
-                    showErrorNoInternet = ::showErrorNoInternet
-                )
-            }
-        }
+        collectFlowLocations(adapter)
+        collectLoadStates(adapter)
 
         binding.locationsList.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(adapter),
@@ -91,16 +72,45 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
         }
     }
 
-    //TODO: extract this somewhere to avoid duplications
+    @Suppress("UNCHECKED_CAST")
+    private fun collectLoadStates(adapter: LocationAdapter) {
+        launchOnLifecycleScope {
+            adapter.loadStateFlow.collect { loadStates ->
+                val hasInternetConnection = context?.let { utilities.hasInternetConnection(it) }
+                val error = (loadStates.refresh as? LoadState.Error)?.error
+                utilities.checkStates(
+                    error = error,
+                    adapter = adapter as PagingDataAdapter<Any, RecyclerView.ViewHolder>,
+                    hasInternetConnection = hasInternetConnection,
+                    loadStates = loadStates,
+                    showLoading = ::showLoading,
+                    showErrorGeneric = ::showErrorGeneric,
+                    showErrorNoInternet = ::showErrorNoInternet
+                )
+            }
+        }
+    }
+
+    private fun collectFlowLocations(adapter: LocationAdapter) {
+        launchOnLifecycleScope {
+            mViewModel.locationsFlow.collectLatest {
+                showLoading(false)
+                showErrorGeneric(false)
+                showErrorNoInternet(false)
+                adapter.submitData(it)
+            }
+        }
+    }
+
     private fun showLoading(show: Boolean) {
-        binding.ltMorty.visibility = show.toVisibilityGone()
+        binding.customError.showLoading(show)
     }
 
     private fun showErrorGeneric(show: Boolean) {
-        binding.ltGenericError.visibility = show.toVisibilityGone()
+        binding.customError.showErrorGeneric(show)
     }
 
     private fun showErrorNoInternet(show: Boolean) {
-        binding.ltNoInternet.visibility = show.toVisibilityGone()
+        binding.customError.showErrorNoInternet(show)
     }
 }

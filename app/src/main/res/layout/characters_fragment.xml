@@ -22,40 +22,14 @@
 			tools:listitem="@layout/character_item_list"
 			tools:spanCount="3" />
 		
-		<com.airbnb.lottie.LottieAnimationView
-			android:id="@+id/lt_morty"
+		<com.nunop.rickandmorty.utils.layouts.CustomError
+			android:id="@+id/customError"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:lottie_autoPlay="true"
-			app:lottie_loop="true"
-			app:lottie_rawRes="@raw/morty_loading" />
-		
-		<com.airbnb.lottie.LottieAnimationView
-			android:id="@+id/lt_no_internet"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:lottie_autoPlay="true"
-			app:lottie_loop="true"
-			app:lottie_rawRes="@raw/no_internet" />
-		
-		<com.airbnb.lottie.LottieAnimationView
-			android:id="@+id/lt_generic_error"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toStartOf="parent"
-			app:layout_constraintTop_toTopOf="parent"
-			app:lottie_autoPlay="true"
-			app:lottie_loop="true"
-			app:lottie_rawRes="@raw/generic_error" />
+			app:layout_constraintTop_toTopOf="parent" />
+	
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

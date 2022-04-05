@@ -1,11 +1,6 @@
 package com.nunop.rickandmorty.utils
 
-import android.os.Bundle
 import android.view.View
-import androidx.annotation.IdRes
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
@@ -71,6 +66,17 @@ fun ResultLocation.toLocation() = Location(
     url = url
 )
 
+//We're using string instead of Uri/Uri.getQueryParameters, because it's easier to unit test
+// this way
+fun String.getNextLocationPage(): Int? {
+    return try {
+        this.substringAfterLast("https://rickandmortyapi.com/api/location?page=").toInt()
+    } catch (e: Exception) {
+        Timber.e(e)
+        null
+    }
+}
+
 fun String.getLocationId(): Int? {
     return try {
         this.substringAfterLast("https://rickandmortyapi.com/api/location/").toInt()
@@ -130,22 +136,6 @@ fun ResultLocation.toLocationCharacterCrossRefList(): List<LocationCharacterCros
             ?.let { list.add(it) }
     }
     return list
-}
-
-/**
- * Protection against illegal state exceptions
- */
-fun NavController.navigateSafe(
-    @IdRes resId: Int,
-    args: Bundle? = null,
-    navOptions: NavOptions? = null,
-    navExtras: Navigator.Extras? = null
-) {
-    try {
-        navigate(resId, args, navOptions, navExtras)
-    } catch (e: Exception) {
-        Timber.e(e.message ?: "Exception")
-    }
 }
 
 /**

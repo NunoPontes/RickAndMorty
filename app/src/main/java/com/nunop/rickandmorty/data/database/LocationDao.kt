@@ -3,7 +3,6 @@ package com.nunop.rickandmorty.data.database
 import androidx.room.*
 import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.data.database.entities.relations.LocationCharacterCrossRef
-import com.nunop.rickandmorty.data.database.entities.relations.LocationWithCharacters
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -19,11 +18,6 @@ interface LocationDao {
     @Transaction //To ensure this happens atomically
     @Query("SELECT * FROM location")
     fun getLocations(): Flow<List<Location>>
-
-
-    @Transaction //To ensure this happens atomically
-    @Query("SELECT * FROM location WHERE id = :locationId")
-    suspend fun getLocationWithCharacters(locationId: Int): List<LocationWithCharacters>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllLocationCharacterCrossRef(

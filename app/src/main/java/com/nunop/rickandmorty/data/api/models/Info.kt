@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.data.api.models.character
+package com.nunop.rickandmorty.data.api.models
 
 data class Info(
     var count: Int? = null,
