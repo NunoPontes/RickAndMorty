@@ -125,5 +125,59 @@ class CharacterRemoteMediatorTest {
         confirmVerified(localDataSource)
     }
 
-    //TODO: do more tests
+    @Test
+    fun successResultWhenNoMoreDataIsPresent() = runTest {
+        val characterResponse = CharacterResponse(
+            info = Info(
+                count = null,
+                next = "https://rickandmortyapi.com/api/character?page=2",
+                pages = null,
+                prev = null
+            ),
+            results = listOf()
+        )
+        val listResponse: Response<CharacterResponse> =
+            Response.success(characterResponse)
+
+        coEvery { remoteDataSource.getCharacters(1) } returns listResponse
+
+        val pagingState = PagingState<Int, Character>(
+            listOf(),
+            null,
+            PagingConfig(10),
+            10
+        )
+        val result = characterRemoteMediator.load(LoadType.REFRESH, pagingState)
+        assertTrue(result is RemoteMediator.MediatorResult.Success)
+        assertTrue((result as RemoteMediator.MediatorResult.Success).endOfPaginationReached)
+
+        coVerify { remoteDataSource.getCharacters(1) }
+        coVerify { localDataSource.getDatabase() }
+        coVerify { localDataSource.deleteAllCharacters() }
+        coVerify { localDataSource.deleteAllCharacterRemoteKey() }
+        coVerify { localDataSource.insertAllCharacterRemoteKey(emptyList()) }
+        coVerify { localDataSource.insertAllCharacters(emptyList()) }
+
+        confirmVerified(remoteDataSource)
+        confirmVerified(localDataSource)
+    }
+
+    @Test
+    fun errorResultWhenErrorOccurs() = runTest {
+        coEvery { remoteDataSource.getCharacters(1) } throws Exception("")
+
+        val pagingState = PagingState<Int, Character>(
+            listOf(),
+            null,
+            PagingConfig(10),
+            10
+        )
+        val result = characterRemoteMediator.load(LoadType.REFRESH, pagingState)
+        assertTrue(result is RemoteMediator.MediatorResult.Error)
+
+        coVerify { remoteDataSource.getCharacters(1) }
+
+        confirmVerified(remoteDataSource)
+        confirmVerified(localDataSource)
+    }
 }
