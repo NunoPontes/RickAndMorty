@@ -58,6 +58,8 @@ class EpisodeRemoteMediator(
             return MediatorResult.Error(exception)
         } catch (exception: HttpException) {
             return MediatorResult.Error(exception)
+        } catch (exception: Exception) {
+            return MediatorResult.Error(exception)
         }
     }
 
