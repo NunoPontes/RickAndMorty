@@ -6,17 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.base.BaseFragment
-import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.databinding.LocationDetailsFragmentBinding
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.repository.location.LocationRepository
-import com.nunop.rickandmorty.repository.location.LocationRepositoryImpl
 import com.nunop.rickandmorty.utils.Resource
 import com.nunop.rickandmorty.utils.toVisibilityGone
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LocationDetailsFragment : BaseFragment() {
 
     private lateinit var mLocationDetailsViewModel: LocationDetailsViewModel
@@ -31,19 +27,11 @@ class LocationDetailsFragment : BaseFragment() {
     ): View {
         _binding = LocationDetailsFragmentBinding.inflate(inflater, container, false)
 
-        val databaseInstance = Database.getInstance(requireContext())
-        val remoteDataSource = RemoteDataSource(RetrofitInstance.api)
-        val localDataSource = LocalDataSource(databaseInstance)
-        val repositoryLocation = LocationRepositoryImpl(
-            localDataSource,
-            remoteDataSource
-        )
-
         val args: LocationDetailsFragmentArgs by navArgs()
         val locationId = args.locationId
 
 
-        locationDetailsViewModel(repositoryLocation)
+        locationDetailsViewModel()
 
 
         launchOnLifecycleScope {
@@ -74,14 +62,11 @@ class LocationDetailsFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun locationDetailsViewModel(repositoryLocation: LocationRepository) {
+    private fun locationDetailsViewModel() {
         activity?.application?.let {
-            val viewModelLocationDetailsProviderFactory =
-                LocationDetailsViewModelProviderFactory(it, repositoryLocation)
             mLocationDetailsViewModel =
                 ViewModelProvider(
-                    this,
-                    viewModelLocationDetailsProviderFactory
+                    this
                 )[LocationDetailsViewModel::class.java]
         }
     }

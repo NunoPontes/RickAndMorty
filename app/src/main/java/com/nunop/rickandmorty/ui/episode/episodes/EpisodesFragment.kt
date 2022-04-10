@@ -15,10 +15,11 @@ import com.nunop.rickandmorty.databinding.EpisodesFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import com.nunop.rickandmorty.utils.Utilities
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalPagingApi
+@AndroidEntryPoint
 class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
     //Uses paging 3 and saves on the DB and uses it using a remote mediator that handles data
     // from api and db

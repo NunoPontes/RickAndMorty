@@ -8,8 +8,9 @@ import com.nunop.rickandmorty.data.database.entities.relations.CharacterEpisodeC
 import com.nunop.rickandmorty.data.database.entities.relations.EpisodeCharacterCrossRef
 import com.nunop.rickandmorty.data.database.entities.relations.LocationCharacterCrossRef
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class LocalDataSource(private val db: Database) :
+class LocalDataSource @Inject constructor(private val db: Database) :
     CharacterLocalDataSource,
     CharacterRemoteKeyLocalDataSource,
     EpisodeLocalDataSource,

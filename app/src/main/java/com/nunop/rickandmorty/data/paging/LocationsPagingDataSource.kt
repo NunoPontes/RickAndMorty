@@ -9,8 +9,9 @@ import com.nunop.rickandmorty.utils.getNextLocationPage
 import com.nunop.rickandmorty.utils.toLocation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class LocationsPagingDataSource(
+class LocationsPagingDataSource @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) :

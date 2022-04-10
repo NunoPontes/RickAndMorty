@@ -13,9 +13,10 @@ import com.nunop.rickandmorty.utils.Constants.Companion.STARTING_PAGE_INDEX
 import com.nunop.rickandmorty.utils.toListCharacters
 import okio.IOException
 import retrofit2.HttpException
+import javax.inject.Inject
 
 @ExperimentalPagingApi
-class CharacterRemoteMediator(
+class CharacterRemoteMediator @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : RemoteMediator<Int, Character>() {

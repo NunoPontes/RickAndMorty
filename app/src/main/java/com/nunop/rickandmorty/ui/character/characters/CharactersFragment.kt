@@ -17,11 +17,12 @@ import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.autoFitColumns
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 
 @ExperimentalPagingApi
+@AndroidEntryPoint
 class CharactersFragment : BaseFragment(), CharacterAdapter
 .OnCharacterClickListener {
     //Uses paging 3 and saves on the DB and uses it using a remote mediator that handles data

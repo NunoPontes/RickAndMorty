@@ -11,23 +11,14 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nunop.rickandmorty.R
-import com.nunop.rickandmorty.api.RetrofitInstance
-import com.nunop.rickandmorty.data.database.Database
-import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
 import com.nunop.rickandmorty.databinding.ActivityMainBinding
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
-import com.nunop.rickandmorty.repository.episode.EpisodeRepositoryImpl
-import com.nunop.rickandmorty.repository.location.LocationRepositoryImpl
 import com.nunop.rickandmorty.ui.character.characters.CharactersViewModel
-import com.nunop.rickandmorty.ui.character.characters.CharactersViewModelProviderFactory
 import com.nunop.rickandmorty.ui.episode.episodes.EpisodesViewModel
-import com.nunop.rickandmorty.ui.episode.episodes.EpisodesViewModelProviderFactory
 import com.nunop.rickandmorty.ui.location.locations.LocationsViewModel
-import com.nunop.rickandmorty.ui.location.locations.LocationsViewModelProviderFactory
+import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalPagingApi
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var mCharactersViewModel: CharactersViewModel
@@ -43,66 +34,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val databaseInstance = Database.getInstance(this)
 
-        val remoteDataSource = RemoteDataSource(RetrofitInstance.api)
-        val localDataSource = LocalDataSource(databaseInstance)
+        mLocationsViewModel =
+            ViewModelProvider(this)[LocationsViewModel::class.java]
 
-
-        characterViewModel(remoteDataSource, localDataSource)
-
-
-        episodeViewModel(remoteDataSource, localDataSource)
-
-
-        locationViewModel(remoteDataSource, localDataSource)
+        mEpisodesViewModel =
+            ViewModelProvider(this)[EpisodesViewModel::class.java]
+        mCharactersViewModel = ViewModelProvider(this)[CharactersViewModel::class.java]
 
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
         }
-
-    }
-
-    private fun locationViewModel(
-        remoteDataSource: RemoteDataSource,
-        localDataSource: LocalDataSource
-    ) {
-        val repositoryLocation = LocationRepositoryImpl(
-            localDataSource,
-            remoteDataSource
-        )
-        val viewModelLocationsProviderFactory =
-            LocationsViewModelProviderFactory(repositoryLocation)
-        mLocationsViewModel =
-            ViewModelProvider(
-                this,
-                viewModelLocationsProviderFactory
-            )[LocationsViewModel::class.java]
-    }
-
-    private fun episodeViewModel(
-        remoteDataSource: RemoteDataSource,
-        localDataSource: LocalDataSource
-    ) {
-        val repositoryEpisode = EpisodeRepositoryImpl(remoteDataSource, localDataSource)
-        val viewModelEpisodesProviderFactory = EpisodesViewModelProviderFactory(repositoryEpisode)
-        mEpisodesViewModel =
-            ViewModelProvider(this, viewModelEpisodesProviderFactory)[EpisodesViewModel::class.java]
-    }
-
-    private fun characterViewModel(
-        remoteDataSource: RemoteDataSource,
-        localDataSource: LocalDataSource
-    ) {
-        val repositoryCharacter =
-            CharacterRepositoryImpl(remoteDataSource, localDataSource)
-        val viewModelCharactersProviderFactory =
-            CharactersViewModelProviderFactory(repositoryCharacter)
-        mCharactersViewModel =
-            ViewModelProvider(
-                this,
-                viewModelCharactersProviderFactory
-            )[CharactersViewModel::class.java]
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
@@ -14,25 +13,28 @@ import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toLocation
 import com.nunop.rickandmorty.utils.toLocationCharacterCrossRefList
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class LocationRepositoryImpl(
+class LocationRepositoryImpl @Inject constructor(
+    private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    private val context: Context?,
+    private val locationsPagingDataSource: LocationsPagingDataSource
 ) : LocationRepository {
 
     override suspend fun getLocations(pageNumber: Int) =
-        RetrofitInstance.api.getLocations(pageNumber)
+        remoteDataSource.getLocations(pageNumber)
 
     override suspend fun insertLocation(location: Location) =
         localDataSource.insertLocation(location)
 
     override suspend fun getAllLocations(): Flow<PagingData<ResultLocation>> = Pager(
         config = PagingConfig(pageSize = 20, prefetchDistance = 2),
-        pagingSourceFactory = { LocationsPagingDataSource(remoteDataSource, localDataSource) }
+        pagingSourceFactory = { locationsPagingDataSource }
     ).flow
 
 
-    override suspend fun getLocationById(locationId: Int, context: Context?): Location? {
+    override suspend fun getLocationById(locationId: Int): Location? {
         val utilities = Utilities()
         if (context?.let { utilities.hasInternetConnection(it) } == true) {
             val response = remoteDataSource.getLocationById(locationId)

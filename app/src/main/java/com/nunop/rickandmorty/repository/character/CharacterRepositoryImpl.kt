@@ -16,20 +16,19 @@ import com.nunop.rickandmorty.utils.toCharacter
 import com.nunop.rickandmorty.utils.toCharacterEpisodeCrossRefList
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
+import javax.inject.Inject
 
-class CharacterRepositoryImpl(
+@ExperimentalPagingApi
+class CharacterRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val context: Context?,
+    private val characterRemoteMediator: CharacterRemoteMediator
 ) : CharacterRepository {
 
     @ExperimentalPagingApi
     override fun getCharactersFromMediator(): Flow<PagingData<Character>> {
         val pagingSourceFactory = { localDataSource.getCharactersPaged() }
-
-        val remoteMediator = CharacterRemoteMediator(
-            remoteDataSource,
-            localDataSource
-        )
 
         return Pager(
             config = PagingConfig(
@@ -38,7 +37,7 @@ class CharacterRepositoryImpl(
                 maxSize = Constants.PAGE_SIZE + (Constants.PAGE_SIZE * 2),
                 enablePlaceholders = false,
             ),
-            remoteMediator = remoteMediator,
+            remoteMediator = characterRemoteMediator,
             pagingSourceFactory = pagingSourceFactory
         ).flow
     }
@@ -51,7 +50,7 @@ class CharacterRepositoryImpl(
         return localDataSource.getCharacterById(characterId)
     }
 
-    override suspend fun getCharacterById(characterId: Int, context: Context?): Character? {
+    override suspend fun getCharacterById(characterId: Int): Character? {
         val utilities = Utilities()
         if (context?.let { utilities.hasInternetConnection(it) } == true) {
             val response = remoteDataSource.getCharacterById(characterId)

@@ -7,10 +7,13 @@ import androidx.paging.cachedIn
 import com.nunop.rickandmorty.base.BaseViewModel
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.repository.character.CharacterRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 @ExperimentalPagingApi
-class CharactersViewModel(
+@HiltViewModel
+class CharactersViewModel @Inject constructor(
     private val repository: CharacterRepository
 ) : BaseViewModel() {
 

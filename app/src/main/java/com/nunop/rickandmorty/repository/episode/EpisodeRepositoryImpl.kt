@@ -14,10 +14,14 @@ import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toEpisode
 import com.nunop.rickandmorty.utils.toEpisodeCharacterCrossRefList
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class EpisodeRepositoryImpl(
+@ExperimentalPagingApi
+class EpisodeRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val context: Context?,
+    private val episodeRemoteMediator: EpisodeRemoteMediator
 ) : EpisodeRepository {
 
     @ExperimentalPagingApi
@@ -30,15 +34,12 @@ class EpisodeRepositoryImpl(
                 maxSize = PAGE_SIZE + (PAGE_SIZE * 2),
                 enablePlaceholders = false,
             ),
-            remoteMediator = EpisodeRemoteMediator(
-                remoteDataSource,
-                localDataSource
-            ),
+            remoteMediator = episodeRemoteMediator,
             pagingSourceFactory = pagingSourceFactory
         ).flow
     }
 
-    override suspend fun getEpisodeById(episodeId: Int, context: Context?): Episode? {
+    override suspend fun getEpisodeById(episodeId: Int): Episode? {
         val utilities = Utilities()
         if (context?.let { utilities.hasInternetConnection(it) } == true) {
             val response = remoteDataSource.getEpisodeById(episodeId)

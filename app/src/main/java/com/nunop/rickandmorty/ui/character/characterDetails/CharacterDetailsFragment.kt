@@ -12,17 +12,13 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nunop.rickandmorty.R
-import com.nunop.rickandmorty.api.RetrofitInstance
 import com.nunop.rickandmorty.base.BaseFragment
-import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.databinding.CharacterDetailsFragmentBinding
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.repository.character.CharacterRepository
-import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
 import com.nunop.rickandmorty.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalPagingApi
+@AndroidEntryPoint
 class CharacterDetailsFragment : BaseFragment() {
 
     private lateinit var mCharacterDetailsViewModel: CharacterDetailsViewModel
@@ -43,16 +39,10 @@ class CharacterDetailsFragment : BaseFragment() {
     ): View {
         _binding = CharacterDetailsFragmentBinding.inflate(inflater, container, false)
 
-        val databaseInstance = Database.getInstance(requireContext())
-        val remoteDataSource = RemoteDataSource(RetrofitInstance.api)
-        val localDataSource = LocalDataSource(databaseInstance)
-        val repositoryCharacter =
-            CharacterRepositoryImpl(remoteDataSource, localDataSource)
-
         val args: CharacterDetailsFragmentArgs by navArgs()
         val characterId = args.characterId
 
-        characterDetailsViewModel(repositoryCharacter)
+        characterDetailsViewModel()
 
         setTabs()
 
@@ -90,14 +80,11 @@ class CharacterDetailsFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun characterDetailsViewModel(repositoryCharacter: CharacterRepository) {
+    private fun characterDetailsViewModel() {
         activity?.let {
-            val viewModelCharacterDetailsProviderFactory =
-                CharacterDetailsViewModelProviderFactory(it.application, repositoryCharacter)
             mCharacterDetailsViewModel =
                 ViewModelProvider(
-                    it,
-                    viewModelCharacterDetailsProviderFactory
+                    it
                 )[CharacterDetailsViewModel::class.java]
         }
     }

@@ -8,8 +8,9 @@ import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.api.models.location.LocationResponse
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import retrofit2.Response
+import javax.inject.Inject
 
-class RemoteDataSource(private val api: RickAndMortyAPI) :
+class RemoteDataSource @Inject constructor(private val api: RickAndMortyAPI) :
     CharacterRemoteDataSource,
     LocationRemoteDataSource,
     EpisodeRemoteDataSource {

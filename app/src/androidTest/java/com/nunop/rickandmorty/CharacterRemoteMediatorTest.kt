@@ -1,9 +1,6 @@
 package com.nunop.rickandmorty
 
 import androidx.paging.*
-import androidx.room.withTransaction
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.nunop.rickandmorty.data.api.models.Info
 import com.nunop.rickandmorty.data.api.models.character.CharacterResponse
@@ -15,6 +12,8 @@ import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
 import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,16 +22,21 @@ import org.junit.After
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Named
 
 
 @ExperimentalCoroutinesApi
 @ExperimentalPagingApi
-@RunWith(AndroidJUnit4::class)
 @SmallTest
+@HiltAndroidTest
 class CharacterRemoteMediatorTest {
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     private lateinit var characterRemoteMediator: CharacterRemoteMediator
 
@@ -41,23 +45,16 @@ class CharacterRemoteMediatorTest {
 
     @MockK
     private lateinit var localDataSource: LocalDataSource
-    private lateinit var mockDb: Database
+
+    @Inject
+    @Named("test_db")
+    lateinit var mockDb: Database
 
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxUnitFun = true)
         characterRemoteMediator = CharacterRemoteMediator(remoteDataSource, localDataSource)
-
-        mockDb = Database.getInstance(ApplicationProvider.getApplicationContext())
-
-        mockkStatic(
-            "androidx.room.RoomDatabaseKt"
-        )
-
-        val transactionLambda = slot<suspend () -> R>()
-        coEvery { mockDb.withTransaction(capture(transactionLambda)) } coAnswers {
-            transactionLambda.captured.invoke()
-        }
+        hiltRule.inject()
 
         every { localDataSource.getDatabase() } returns mockDb
     }

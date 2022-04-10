@@ -15,10 +15,11 @@ import com.nunop.rickandmorty.databinding.LocationsFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import com.nunop.rickandmorty.utils.Utilities
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalPagingApi
+@AndroidEntryPoint
 class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListener {
     //Uses paging 3 and saves on the DB (but does not use that data)
     private var _binding: LocationsFragmentBinding? = null

@@ -6,9 +6,12 @@ import androidx.paging.cachedIn
 import com.nunop.rickandmorty.base.BaseViewModel
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.repository.location.LocationRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class LocationsViewModel(
+@HiltViewModel
+class LocationsViewModel @Inject constructor(
     private val repository: LocationRepository
 ) : BaseViewModel() {
 
