@@ -18,7 +18,6 @@ import org.mockito.Mockito.*
 import retrofit2.Response
 import kotlin.test.assertEquals
 
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS) //TODO:JUnit5
 @ExperimentalCoroutinesApi
 class LocationsUnitTest {
 
@@ -31,7 +30,6 @@ class LocationsUnitTest {
         remoteDataSource = mock(RemoteDataSource::class.java)
         localDataSource = mock(LocalDataSource::class.java)
         locationsPagingDataSource = LocationsPagingDataSource(remoteDataSource, localDataSource)
-
     }
 
     @Test

@@ -50,6 +50,7 @@ android {
 
 dependencies {
 
+    // Android
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "androidx.appcompat:appcompat:1.4.1"
     implementation "com.google.android.material:material:1.5.0"
@@ -95,7 +96,7 @@ dependencies {
     //Leak Canary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:2.8.1"
 
-    //Loading animations
+    //Loading animations - Lottie
     implementation "com.airbnb.android:lottie:5.0.3"
 
     //Dagger - Hilt

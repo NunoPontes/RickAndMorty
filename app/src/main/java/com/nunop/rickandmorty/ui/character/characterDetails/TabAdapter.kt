@@ -10,7 +10,6 @@ import com.nunop.rickandmorty.ui.character.characterDetails.characterInfo.Charac
 class TabAdapter(fa: FragmentActivity) :
     FragmentStateAdapter(fa) {
 
-    //TODO: find better way to avoid hardcoded values, pass a list in the arguments?
     override fun getItemCount(): Int {
         return 1
     }

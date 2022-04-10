@@ -42,6 +42,8 @@ class LocationDetailsFragment : BaseFragment() {
             when (response) {
                 is Resource.Success -> {
                     binding.textView2.text = response.data?.name
+                    showLoading(false)
+                    showErrorGeneric(false)
                 }
                 is Resource.Error -> {
                     showLoading(false)
