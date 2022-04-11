@@ -7,7 +7,6 @@ import com.nunop.rickandmorty.data.api.models.episode.EpisodeResponse
 import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Episode
-import com.nunop.rickandmorty.data.paging.EpisodeRemoteMediator
 import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import dagger.hilt.android.testing.HiltAndroidRule

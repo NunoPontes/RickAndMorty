@@ -3,8 +3,6 @@ package com.nunop.rickandmorty.data.database
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.nunop.rickandmorty.data.database.Database
-import com.nunop.rickandmorty.data.database.EpisodeDao
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.utils.getOrAwaitValue
 import dagger.hilt.android.testing.HiltAndroidRule

@@ -9,7 +9,6 @@ import com.nunop.rickandmorty.data.api.models.character.Origin
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Character
-import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
 import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import dagger.hilt.android.testing.HiltAndroidRule

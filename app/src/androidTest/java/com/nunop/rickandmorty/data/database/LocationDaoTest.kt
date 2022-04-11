@@ -2,13 +2,8 @@ package com.nunop.rickandmorty.data.database
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.asLiveData
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
-import com.nunop.rickandmorty.data.database.Database
-import com.nunop.rickandmorty.data.database.LocationDao
 import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.utils.getOrAwaitValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -19,7 +14,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import javax.inject.Inject
 import javax.inject.Named
 
