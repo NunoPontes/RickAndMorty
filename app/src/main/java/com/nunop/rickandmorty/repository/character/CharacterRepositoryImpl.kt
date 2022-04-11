@@ -8,8 +8,8 @@ import androidx.paging.PagingData
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toCharacter

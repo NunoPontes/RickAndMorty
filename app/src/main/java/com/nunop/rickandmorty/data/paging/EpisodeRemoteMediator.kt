@@ -7,8 +7,8 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.database.entities.EpisodeRemoteKey
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.STARTING_PAGE_INDEX
 import com.nunop.rickandmorty.utils.toListEpisodes
 import okio.IOException

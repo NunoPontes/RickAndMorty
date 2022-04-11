@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.datasource.localdatasource
+package com.nunop.rickandmorty.data.datasource.localdatasource
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagingSource

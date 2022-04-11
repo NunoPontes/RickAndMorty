@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.datasource.remotedatasource
+package com.nunop.rickandmorty.data.datasource.remotedatasource
 
 import com.nunop.rickandmorty.data.api.models.episode.EpisodeResponse
 import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode

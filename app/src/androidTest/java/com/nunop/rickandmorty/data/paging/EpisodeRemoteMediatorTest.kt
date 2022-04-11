@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty
+package com.nunop.rickandmorty.data.paging
 
 import androidx.paging.*
 import androidx.test.filters.SmallTest
@@ -8,8 +8,8 @@ import com.nunop.rickandmorty.data.api.models.episode.ResultEpisode
 import com.nunop.rickandmorty.data.database.Database
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.paging.EpisodeRemoteMediator
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.*

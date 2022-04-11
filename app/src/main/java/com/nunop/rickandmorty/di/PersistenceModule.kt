@@ -3,7 +3,7 @@ package com.nunop.rickandmorty.di
 import android.content.Context
 import androidx.room.Room
 import com.nunop.rickandmorty.data.database.Database
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

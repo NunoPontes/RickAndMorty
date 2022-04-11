@@ -1,13 +1,12 @@
-package com.nunop.rickandmorty
+package com.nunop.rickandmorty.data.paging
 
 import androidx.paging.PagingSource
 import com.nunop.rickandmorty.data.api.models.Info
 import com.nunop.rickandmorty.data.api.models.location.LocationResponse
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.data.database.entities.Location
-import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
@@ -19,7 +18,7 @@ import retrofit2.Response
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-class LocationsUnitTest {
+class LocationsPagingDataSourceTest {
 
     private lateinit var locationsPagingDataSource: LocationsPagingDataSource
     private lateinit var remoteDataSource: RemoteDataSource

@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty
+package com.nunop.rickandmorty.data.database
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.asLiveData

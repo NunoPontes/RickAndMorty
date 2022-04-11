@@ -1,6 +1,6 @@
-package com.nunop.rickandmorty.datasource.remotedatasource
+package com.nunop.rickandmorty.data.datasource.remotedatasource
 
-import com.nunop.rickandmorty.api.RickAndMortyAPI
+import com.nunop.rickandmorty.data.api.RickAndMortyAPI
 import com.nunop.rickandmorty.data.api.models.character.CharacterResponse
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter
 import com.nunop.rickandmorty.data.api.models.episode.EpisodeResponse

@@ -5,8 +5,8 @@ import androidx.paging.ExperimentalPagingApi
 import com.nunop.rickandmorty.data.paging.CharacterRemoteMediator
 import com.nunop.rickandmorty.data.paging.EpisodeRemoteMediator
 import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.repository.character.CharacterRepository
 import com.nunop.rickandmorty.repository.character.CharacterRepositoryImpl
 import com.nunop.rickandmorty.repository.episode.EpisodeRepository

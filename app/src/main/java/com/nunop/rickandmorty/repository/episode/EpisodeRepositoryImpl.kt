@@ -7,8 +7,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.data.paging.EpisodeRemoteMediator
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants.Companion.PAGE_SIZE
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toEpisode

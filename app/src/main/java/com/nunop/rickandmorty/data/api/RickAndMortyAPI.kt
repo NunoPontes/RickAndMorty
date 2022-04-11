@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.api
+package com.nunop.rickandmorty.data.api
 
 import com.nunop.rickandmorty.data.api.models.character.CharacterResponse
 import com.nunop.rickandmorty.data.api.models.character.ResultCharacter

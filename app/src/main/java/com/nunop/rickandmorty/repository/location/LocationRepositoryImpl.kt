@@ -7,8 +7,8 @@ import androidx.paging.PagingData
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.toLocation
 import com.nunop.rickandmorty.utils.toLocationCharacterCrossRefList

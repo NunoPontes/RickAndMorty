@@ -1,7 +1,7 @@
 package com.nunop.rickandmorty.di
 
-import com.nunop.rickandmorty.api.RickAndMortyAPI
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.api.RickAndMortyAPI
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.Constants
 import dagger.Module
 import dagger.Provides

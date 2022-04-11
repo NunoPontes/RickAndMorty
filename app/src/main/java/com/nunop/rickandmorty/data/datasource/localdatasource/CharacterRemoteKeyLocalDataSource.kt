@@ -1,4 +1,4 @@
-package com.nunop.rickandmorty.datasource.localdatasource
+package com.nunop.rickandmorty.data.datasource.localdatasource
 
 import com.nunop.rickandmorty.data.database.entities.CharacterRemoteKey
 

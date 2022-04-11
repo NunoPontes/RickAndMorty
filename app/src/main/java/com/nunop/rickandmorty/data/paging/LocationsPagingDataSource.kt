@@ -3,8 +3,8 @@ package com.nunop.rickandmorty.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
-import com.nunop.rickandmorty.datasource.localdatasource.LocalDataSource
-import com.nunop.rickandmorty.datasource.remotedatasource.RemoteDataSource
+import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
+import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
 import com.nunop.rickandmorty.utils.getNextLocationPage
 import com.nunop.rickandmorty.utils.toLocation
 import kotlinx.coroutines.Dispatchers
