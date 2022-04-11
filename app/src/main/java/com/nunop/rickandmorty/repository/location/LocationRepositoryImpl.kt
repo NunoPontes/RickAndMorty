@@ -18,8 +18,7 @@ import javax.inject.Inject
 class LocationRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val context: Context?,
-    private val locationsPagingDataSource: LocationsPagingDataSource
+    private val context: Context?
 ) : LocationRepository {
 
     override suspend fun getLocations(pageNumber: Int) =
@@ -30,7 +29,8 @@ class LocationRepositoryImpl @Inject constructor(
 
     override suspend fun getAllLocations(): Flow<PagingData<ResultLocation>> = Pager(
         config = PagingConfig(pageSize = 20, prefetchDistance = 2),
-        pagingSourceFactory = { locationsPagingDataSource }
+        pagingSourceFactory = { LocationsPagingDataSource(remoteDataSource, localDataSource) }
+        //it has to be a new instance to avoid crashing
     ).flow
 
 
