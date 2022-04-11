@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.nunop.rickandmorty.base.BaseFragment
+import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.databinding.EpisodeDetailsFragmentBinding
 import com.nunop.rickandmorty.utils.Resource
 import com.nunop.rickandmorty.utils.toVisibilityGone
@@ -27,19 +28,10 @@ class EpisodeDetailsFragment : BaseFragment() {
     ): View {
         _binding = EpisodeDetailsFragmentBinding.inflate(inflater, container, false)
 
-//        val databaseInstance = Database.getInstance(requireContext())
-//        val remoteDataSource = RemoteDataSource(RetrofitInstance.api)
-//        val localDataSource = LocalDataSource(databaseInstance)
-//        val repositoryEpisode =
-//            EpisodeRepositoryImpl(remoteDataSource, localDataSource)
-
-
         val args: EpisodeDetailsFragmentArgs by navArgs()
         val episodeId = args.episodeId
 
-
         characterDetailsViewModel()
-
 
         launchOnLifecycleScope {
             mEpisodeDetailsViewModel.getEpisodeById(episodeId)
@@ -49,7 +41,7 @@ class EpisodeDetailsFragment : BaseFragment() {
 
             when (response) {
                 is Resource.Success -> {
-                    binding.textView2.text = response.data?.name
+                    initializeViews(response)
                     showLoading(false)
                     showErrorGeneric(false)
                 }
@@ -87,5 +79,14 @@ class EpisodeDetailsFragment : BaseFragment() {
 
     private fun showErrorGeneric(show: Boolean) {
         binding.ltGenericError.visibility = show.toVisibilityGone()
+    }
+
+    private fun initializeViews(response: Resource<Episode>) {
+        binding.apply {
+            tvName.text = response.data?.name
+            tvAirDate.text = response.data?.air_date
+            tvCreated.text = response.data?.created
+            tvEpisode.text = response.data?.episode
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.nunop.rickandmorty.base.BaseFragment
+import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.databinding.LocationDetailsFragmentBinding
 import com.nunop.rickandmorty.utils.Resource
 import com.nunop.rickandmorty.utils.toVisibilityGone
@@ -19,7 +20,6 @@ class LocationDetailsFragment : BaseFragment() {
 
     private var _binding: LocationDetailsFragmentBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +41,7 @@ class LocationDetailsFragment : BaseFragment() {
         mLocationDetailsViewModel.locationLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    binding.textView2.text = response.data?.name
+                    initializeViews(response)
                     showLoading(false)
                     showErrorGeneric(false)
                 }
@@ -79,5 +79,14 @@ class LocationDetailsFragment : BaseFragment() {
 
     private fun showErrorGeneric(show: Boolean) {
         binding.ltGenericError.visibility = show.toVisibilityGone()
+    }
+
+    private fun initializeViews(response: Resource<Location>) {
+        binding.apply {
+            tvName.text = response.data?.name
+            tvType.text = response.data?.type
+            tvCreated.text = response.data?.created
+            tvDimension.text = response.data?.dimension
+        }
     }
 }

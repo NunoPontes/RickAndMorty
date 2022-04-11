@@ -16,6 +16,7 @@
 		
 		<TextView
 			android:id="@+id/tvName"
+			style="@style/normalText"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:layout_constraintStart_toStartOf="parent"
@@ -24,6 +25,7 @@
 		
 		<TextView
 			android:id="@+id/tvAirDate"
+			style="@style/normalText"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +35,7 @@
 		
 		<TextView
 			android:id="@+id/tvEpisode"
+			style="@style/normalText"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			app:layout_constraintStart_toStartOf="parent"

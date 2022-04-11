@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--	Text Sizes-->
+	<dimen name="normal_size_text">14sp</dimen>
+	
+	
 	<dimen name="round_corner">8dp</dimen>
 	<dimen name="image_size">100dp</dimen>
 	<dimen name="margin_normal">8dp</dimen>
