@@ -13,8 +13,10 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.base.BaseFragment
+import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharacterDetailsFragmentBinding
 import com.nunop.rickandmorty.utils.Resource
+import com.nunop.rickandmorty.utils.toVisibilityGone
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalPagingApi
@@ -53,19 +55,17 @@ class CharacterDetailsFragment : BaseFragment() {
         mCharacterDetailsViewModel.characterLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    binding.apply {
-                        context?.let {
-                            Glide.with(it)
-                                .load(response.data?.image)
-                                .into(ivPhoto)
-                        }
-                    }
+                    initializeViews(response)
+                    showLoading(false)
+                    showErrorGeneric(false)
                 }
                 is Resource.Error -> {
-                    //TODO:
+                    showLoading(false)
+                    showErrorGeneric(true)
                 }
                 is Resource.Loading -> {
-                    //TODO:
+                    showErrorGeneric(false)
+                    showLoading(true)
                 }
             }
         }
@@ -103,5 +103,23 @@ class CharacterDetailsFragment : BaseFragment() {
                 }
             }
         }.attach()
+    }
+
+    private fun showLoading(show: Boolean) {
+        binding.ltMorty.visibility = show.toVisibilityGone()
+    }
+
+    private fun showErrorGeneric(show: Boolean) {
+        binding.ltGenericError.visibility = show.toVisibilityGone()
+    }
+
+    private fun initializeViews(response: Resource<Character>) {
+        binding.apply {
+            context?.let {
+                Glide.with(it)
+                    .load(response.data?.image)
+                    .into(ivPhoto)
+            }
+        }
     }
 }

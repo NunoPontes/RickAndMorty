@@ -14,7 +14,6 @@ import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharactersFragmentBinding
 import com.nunop.rickandmorty.ui.MainActivity
-import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.autoFitColumns
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,10 +53,14 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
         val marginWidth =
             (resources.getDimension(R.dimen.margin_normal) / resources.displayMetrics.density).toInt()
         binding.charactersList.autoFitColumns(columnWidth + marginWidth)
-        binding.charactersList.adapter = adapter.withLoadStateHeaderAndFooter(
-            header = PagingLoadStateAdapter(adapter),
-            footer = PagingLoadStateAdapter(adapter)
-        )
+        binding.charactersList.adapter = adapter
+
+        //TODO: commented LoadStateAdapter because of bugs with scroll https://issuetracker.google
+        // .com/issues/228985896
+//            .withLoadStateHeaderAndFooter(
+//            header = PagingLoadStateAdapter(adapter),
+//            footer = PagingLoadStateAdapter(adapter)
+//        )
 
         binding.swipeCharacters.apply {
             setOnRefreshListener {

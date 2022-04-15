@@ -33,9 +33,7 @@ class CharacterRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = Constants.PAGE_SIZE,
-                prefetchDistance = 2,
-                maxSize = Constants.PAGE_SIZE + (Constants.PAGE_SIZE * 2),
-                enablePlaceholders = false,
+                enablePlaceholders = false
             ),
             remoteMediator = characterRemoteMediator,
             pagingSourceFactory = pagingSourceFactory

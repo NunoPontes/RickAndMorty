@@ -10,6 +10,7 @@ import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharacterInfoFragmentBinding
 import com.nunop.rickandmorty.ui.character.characterDetails.CharacterDetailsViewModel
 import com.nunop.rickandmorty.utils.Resource
+import com.nunop.rickandmorty.utils.toVisibilityGone
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,15 +59,27 @@ class CharacterInfoFragment : BaseFragment() {
             when (response) {
                 is Resource.Success -> {
                     initializeViews(response)
+                    showLoading(false)
+                    showErrorGeneric(false)
                 }
                 is Resource.Error -> {
-                    //TODO:
+                    showLoading(false)
+                    showErrorGeneric(true)
                 }
                 is Resource.Loading -> {
-                    //TODO:
+                    showErrorGeneric(false)
+                    showLoading(true)
                 }
             }
         }
+    }
+
+    private fun showLoading(show: Boolean) {
+        binding.ltMorty.visibility = show.toVisibilityGone()
+    }
+
+    private fun showErrorGeneric(show: Boolean) {
+        binding.ltGenericError.visibility = show.toVisibilityGone()
     }
 
     private fun initializeViews(response: Resource<Character>) {

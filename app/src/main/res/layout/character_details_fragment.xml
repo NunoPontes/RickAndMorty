@@ -50,5 +50,29 @@
 		android:layout_height="match_parent"
 		android:fillViewport="true"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+	
+	<com.airbnb.lottie.LottieAnimationView
+		android:id="@+id/lt_morty"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:lottie_autoPlay="true"
+		app:lottie_loop="true"
+		app:lottie_rawRes="@raw/morty_loading" />
+	
+	<com.airbnb.lottie.LottieAnimationView
+		android:id="@+id/lt_generic_error"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:lottie_autoPlay="true"
+		app:lottie_loop="true"
+		app:lottie_rawRes="@raw/generic_error" />
+	
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
