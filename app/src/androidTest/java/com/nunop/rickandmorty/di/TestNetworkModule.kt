@@ -3,11 +3,10 @@ package com.nunop.rickandmorty.di
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.nunop.rickandmorty.data.api.RickAndMortyAPI
 import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.utils.Constants
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,8 +14,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
-object NetworkModule {
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [NetworkModule::class]
+)
+object TestNetworkModule {
 
     @Provides
     @Singleton
@@ -39,7 +41,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl("http://localhost:9090/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

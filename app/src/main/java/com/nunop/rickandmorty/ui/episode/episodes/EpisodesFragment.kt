@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Episode
 import com.nunop.rickandmorty.databinding.EpisodesFragmentBinding
-import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import com.nunop.rickandmorty.utils.Utilities
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +40,7 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mEpisodesViewModel = (activity as MainActivity).mEpisodesViewModel
+        mEpisodesViewModel = ViewModelProvider(this)[EpisodesViewModel::class.java]
 
 
         val adapter = EpisodeAdapter(this)

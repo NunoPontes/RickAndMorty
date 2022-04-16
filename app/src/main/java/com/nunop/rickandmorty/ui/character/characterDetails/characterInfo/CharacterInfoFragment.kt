@@ -75,11 +75,11 @@ class CharacterInfoFragment : BaseFragment() {
     }
 
     private fun showLoading(show: Boolean) {
-        binding.ltMorty.visibility = show.toVisibilityGone()
+        binding.ltMortyInfo.visibility = show.toVisibilityGone()
     }
 
     private fun showErrorGeneric(show: Boolean) {
-        binding.ltGenericError.visibility = show.toVisibilityGone()
+        binding.ltGenericErrorInfo.visibility = show.toVisibilityGone()
     }
 
     private fun initializeViews(response: Resource<Character>) {

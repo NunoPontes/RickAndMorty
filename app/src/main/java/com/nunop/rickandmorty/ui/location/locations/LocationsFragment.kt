@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -12,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.databinding.LocationsFragmentBinding
-import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.PagingLoadStateAdapter
 import com.nunop.rickandmorty.utils.Utilities
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +26,7 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
     private val binding get() = _binding!!
 
     private val utilities = Utilities()
-    private lateinit var mViewModel: LocationsViewModel
+    private lateinit var mLocationsViewModel: LocationsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +38,7 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel = (activity as MainActivity).mLocationsViewModel
+        mLocationsViewModel = ViewModelProvider(this)[LocationsViewModel::class.java]
 
         val adapter = LocationAdapter(this)
 
@@ -94,7 +94,7 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
 
     private fun collectFlowLocations(adapter: LocationAdapter) {
         launchOnLifecycleScope {
-            mViewModel.locationsFlow.collectLatest {
+            mLocationsViewModel.locationsFlow.collectLatest {
                 showLoading(false)
                 showErrorGeneric(false)
                 showErrorNoInternet(false)

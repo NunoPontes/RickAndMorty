@@ -2,7 +2,6 @@ package com.nunop.rickandmorty.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,19 +11,11 @@ import androidx.paging.ExperimentalPagingApi
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.databinding.ActivityMainBinding
-import com.nunop.rickandmorty.ui.character.characters.CharactersViewModel
-import com.nunop.rickandmorty.ui.episode.episodes.EpisodesViewModel
-import com.nunop.rickandmorty.ui.location.locations.LocationsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
-    lateinit var mCharactersViewModel: CharactersViewModel
-    lateinit var mLocationsViewModel: LocationsViewModel
-    lateinit var mEpisodesViewModel: EpisodesViewModel
-
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var navController: NavController
@@ -34,13 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        mLocationsViewModel =
-            ViewModelProvider(this)[LocationsViewModel::class.java]
-
-        mEpisodesViewModel =
-            ViewModelProvider(this)[EpisodesViewModel::class.java]
-        mCharactersViewModel = ViewModelProvider(this)[CharactersViewModel::class.java]
 
         if (savedInstanceState == null) {
             setupBottomNavigationBar()

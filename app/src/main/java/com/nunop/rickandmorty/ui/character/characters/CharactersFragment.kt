@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -13,7 +14,6 @@ import com.nunop.rickandmorty.R
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharactersFragmentBinding
-import com.nunop.rickandmorty.ui.MainActivity
 import com.nunop.rickandmorty.utils.Utilities
 import com.nunop.rickandmorty.utils.autoFitColumns
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +31,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
 
     private val utilities = Utilities()
 
-    private lateinit var mViewModel: CharactersViewModel
+    private lateinit var mCharactersViewModel: CharactersViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +43,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel = (activity as MainActivity).mCharactersViewModel
+        mCharactersViewModel = ViewModelProvider(this)[CharactersViewModel::class.java]
 
         val adapter = CharacterAdapter(context, this)
         collectLoadStates(adapter)
@@ -104,7 +104,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
 
     private fun collectFlowCharacters(adapter: CharacterAdapter) {
         launchOnLifecycleScope {
-            mViewModel.charactersFlow.collectLatest {
+            mCharactersViewModel.charactersFlow.collectLatest {
                 showLoading(false)
                 showErrorGeneric(false)
                 showErrorNoInternet(false)

@@ -68,7 +68,7 @@
 		app:layout_constraintTop_toBottomOf="@+id/tvLocation" />
 	
 	<com.airbnb.lottie.LottieAnimationView
-		android:id="@+id/lt_morty"
+		android:id="@+id/lt_morty_info"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +80,7 @@
 		app:lottie_rawRes="@raw/morty_loading" />
 	
 	<com.airbnb.lottie.LottieAnimationView
-		android:id="@+id/lt_generic_error"
+		android:id="@+id/lt_generic_error_info"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:layout_constraintBottom_toBottomOf="parent"
