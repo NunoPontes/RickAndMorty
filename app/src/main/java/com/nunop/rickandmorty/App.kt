@@ -20,7 +20,9 @@ class App : Application(){
 //Things to do:
 //- Add error states
 //- Add styles
-//- Process dead
+//- Clean unused variables and other comments
+//- Process dead (SavedStateHandle) no need to use, because the way we built nothing is lost if
+// process gets killed
 //- Dependency injection
 //- Search option
 //- Filter (that applies on the list and on search)
@@ -34,5 +36,5 @@ class App : Application(){
 //- Unit Tests, maximum coverage
 //- UI tests (with usability tests)
 //- Dependency injection Hilt?
-//- UI Compose
-//- R8/Proguard
+//- UI Compose <--------------------------------------------------
+//- R8/Proguard <-------------------------------------------------

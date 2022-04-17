@@ -8,44 +8,6 @@
 	<color name="black">#FF000000</color>
 	<color name="white">#FFFFFFFF</color>
 	<color name="dark_transparent">#B0000000</color>
-	
-	
-<!--	<color name="primary">#CDDC39</color>-->
-<!--	<color name="primary_dark">#AFB42B</color>-->
-<!--	<color name="primary_light">#F0F4C3</color>-->
-<!--	<color name="accent">#03A9F4</color>-->
-<!--	<color name="primary_text">#212121</color>-->
-<!--	<color name="secondary_text">#757575</color>-->
-<!--	<color name="icons">#212121</color>-->
-<!--	<color name="divider">#BDBDBD</color>-->
-<!--	-->
-<!--	<color name="primaryColor">#97ce4c</color>-->
-<!--	<color name="primaryLightColor">#caff7d</color>-->
-<!--	<color name="primaryDarkColor">#659d17</color>-->
-<!--	<color name="secondaryColor">#e89ac7</color>-->
-<!--	<color name="secondaryLightColor">#ffccfa</color>-->
-<!--	<color name="secondaryDarkColor">#b56b96</color>-->
-<!--	<color name="primaryTextColor">#000000</color>-->
-<!--	<color name="secondaryTextColor">#000000</color>-->
-	
-	
-	
-	<color name="primary">#03A9F4</color>
-	<color name="primary_dark">#0288D1</color>
-	<color name="primary_light">#B3E5FC</color>
-	<color name="accent">#8BC34A</color>
-	<color name="primary_text">#212121</color>
+
 	<color name="secondary_text">#757575</color>
-	<color name="icons">#FFFFFF</color>
-	<color name="divider">#BDBDBD</color>
-	
-	
-	<color name="primaryColor">#03a9f4</color>
-	<color name="primaryLightColor">#67daff</color>
-	<color name="primaryDarkColor">#007ac1</color>
-	<color name="secondaryColor">#8bc34a</color>
-	<color name="secondaryLightColor">#bef67a</color>
-	<color name="secondaryDarkColor">#5a9216</color>
-	<color name="primaryTextColor">#000000</color>
-	<color name="secondaryTextColor">#000000</color>
 </resources>

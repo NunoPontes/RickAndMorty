@@ -47,32 +47,28 @@ class MockServerDispatcherAndroid {
      */
     inner class RequestDispatcher : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
-            if (request.path=="/character?page=1") {
-                return MockResponse().setResponseCode(200)
-                    .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw.getcharacterspage1success)!!)
-            } else if (request.path=="/character?page=2") {
-                return MockResponse().setResponseCode(200)
-                    .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw
-                        .getcharacterspage2success)!!)
-            } else if (request.path=="/location?page=1") {
-                return MockResponse().setResponseCode(200)
-                    .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw
-                        .getlocationspage1success)!!)
-            } else if (request.path=="/episode?page=1") {
-                return MockResponse().setResponseCode(200)
-                    .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw
-                        .getepisodespage1success)!!)
+            when (request.path) {
+                "/character?page=1" -> {
+                    return MockResponse().setResponseCode(200)
+                        .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw.getcharacterspage1success)!!)
+                }
+                "/character?page=2" -> {
+                    return MockResponse().setResponseCode(200)
+                        .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw
+                            .getcharacterspage2success)!!)
+                }
+                "/location?page=1" -> {
+                    return MockResponse().setResponseCode(200)
+                        .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw
+                            .getlocationspage1success)!!)
+                }
+                "/episode?page=1" -> {
+                    return MockResponse().setResponseCode(200)
+                        .setBody(getStringFile(com.nunop.rickandmorty.test.R.raw
+                            .getepisodespage1success)!!)
+                }
+                else -> return MockResponse().setResponseCode(404)
             }
-            return MockResponse().setResponseCode(404)
-        }
-    }
-
-    /**
-     * Return error response from mock server
-     */
-    inner class ErrorRequestDispatcher : Dispatcher() {
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return MockResponse().setResponseCode(404)
         }
     }
 }
