@@ -37,8 +37,8 @@ object TestNetworkModule {
             .build()
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://localhost:9090/")
@@ -47,14 +47,14 @@ object TestNetworkModule {
             .build()
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideRickAndMortyAPI(retrofit: Retrofit): RickAndMortyAPI {
         return retrofit
             .create(RickAndMortyAPI::class.java)
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideRemoteDataSource(api: RickAndMortyAPI) = RemoteDataSource(api)
 }

@@ -15,15 +15,15 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object PersistenceModule {
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
         context.applicationContext,
         Database::class.java,
         "ricky_db"
     ).build()
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideLocalDataSource(db: Database) = LocalDataSource(db)
 }

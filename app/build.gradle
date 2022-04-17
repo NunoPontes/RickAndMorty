@@ -40,6 +40,10 @@ android {
     }
 
     testOptions {
+        emulatorSnapshots{
+            enableForTestFailures true
+            maxSnapshotsForTestFailures 2
+        }
         packagingOptions {
             jniLibs {
                 useLegacyPackaging true //This is needed due to this bug https://github

@@ -24,8 +24,8 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @ExperimentalPagingApi
 object RepositoryModule {
 
-    @ViewModelScoped
     @Provides
+    @ViewModelScoped
     fun provideEpisodeRemoteMediator(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource
@@ -34,8 +34,8 @@ object RepositoryModule {
         localDataSource
     )
 
-    @ViewModelScoped
     @Provides
+    @ViewModelScoped
     fun provideCharacterRemoteMediator(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource
@@ -44,8 +44,8 @@ object RepositoryModule {
         localDataSource
     )
 
-    @ViewModelScoped
     @Provides
+    @ViewModelScoped
     fun provideCharacterRepository(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
@@ -58,8 +58,8 @@ object RepositoryModule {
         characterRemoteMediator
     ) as CharacterRepository
 
-    @ViewModelScoped
     @Provides
+    @ViewModelScoped
     fun provideEpisodeRepository(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
@@ -72,8 +72,8 @@ object RepositoryModule {
         episodeRemoteMediator
     ) as EpisodeRepository
 
-    @ViewModelScoped
     @Provides
+    @ViewModelScoped
     fun provideLocationRepository(
         remoteDataSource: RemoteDataSource,
         localDataSource: LocalDataSource,
