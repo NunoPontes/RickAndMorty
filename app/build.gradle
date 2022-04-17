@@ -110,8 +110,8 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
 
     //Stetho
-    implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
-    implementation 'com.facebook.stetho:stetho:1.6.0'
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho"
+    implementation "com.facebook.stetho:stetho:$stetho"
 
     //Unit Testing
     testImplementation "com.google.truth:truth:$google_truth"

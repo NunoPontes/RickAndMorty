@@ -13,6 +13,7 @@ buildscript {
     ext.mockito = "4.4.0"
     ext.mockk = "1.12.3"
     ext.espresso = "3.4.0"
+    ext.stetho = "1.6.0"
 
     repositories {
         google()

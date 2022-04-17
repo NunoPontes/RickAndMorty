@@ -37,4 +37,4 @@ class App : Application(){
 //- UI tests (with usability tests)
 //- Dependency injection Hilt?
 //- UI Compose <--------------------------------------------------
-//- R8/Proguard <-------------------------------------------------
+//- R8/Proguard
