@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Episode
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class EpisodeDetailsFragment : BaseFragment() {
 
-    private lateinit var mEpisodeDetailsViewModel: EpisodeDetailsViewModel
+    private val mEpisodeDetailsViewModel: EpisodeDetailsViewModel by viewModels()
 
     private var _binding: EpisodeDetailsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -30,8 +30,6 @@ class EpisodeDetailsFragment : BaseFragment() {
 
         val args: EpisodeDetailsFragmentArgs by navArgs()
         val episodeId = args.episodeId
-
-        characterDetailsViewModel()
 
         launchOnLifecycleScope {
             mEpisodeDetailsViewModel.getEpisodeById(episodeId)
@@ -62,15 +60,6 @@ class EpisodeDetailsFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun characterDetailsViewModel() {
-        activity?.application?.let {
-            mEpisodeDetailsViewModel =
-                ViewModelProvider(
-                    this
-                )[EpisodeDetailsViewModel::class.java]
-        }
     }
 
     private fun showLoading(show: Boolean) {

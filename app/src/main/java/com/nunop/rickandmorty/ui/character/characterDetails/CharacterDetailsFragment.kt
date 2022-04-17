@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.paging.ExperimentalPagingApi
 import androidx.viewpager2.widget.ViewPager2
@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CharacterDetailsFragment : BaseFragment() {
 
-    private lateinit var mCharacterDetailsViewModel: CharacterDetailsViewModel
+    private val mCharacterDetailsViewModel: CharacterDetailsViewModel by activityViewModels()
 
     private var _binding: CharacterDetailsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -43,8 +43,6 @@ class CharacterDetailsFragment : BaseFragment() {
 
         val args: CharacterDetailsFragmentArgs by navArgs()
         val characterId = args.characterId
-
-        characterDetailsViewModel()
 
         setTabs()
 
@@ -78,15 +76,6 @@ class CharacterDetailsFragment : BaseFragment() {
         binding.tabViewpager.adapter = null
         binding.tabViewpager.unregisterOnPageChangeCallback(myPageChangeCallback)
         _binding = null
-    }
-
-    private fun characterDetailsViewModel() {
-        activity?.let {
-            mCharacterDetailsViewModel =
-                ViewModelProvider(
-                    it
-                )[CharacterDetailsViewModel::class.java]
-        }
     }
 
     private fun setTabs() {

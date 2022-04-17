@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Location
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LocationDetailsFragment : BaseFragment() {
 
-    private lateinit var mLocationDetailsViewModel: LocationDetailsViewModel
+    private val mLocationDetailsViewModel: LocationDetailsViewModel by viewModels()
 
     private var _binding: LocationDetailsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -29,10 +29,6 @@ class LocationDetailsFragment : BaseFragment() {
 
         val args: LocationDetailsFragmentArgs by navArgs()
         val locationId = args.locationId
-
-
-        locationDetailsViewModel()
-
 
         launchOnLifecycleScope {
             mLocationDetailsViewModel.getLocationById(locationId)
@@ -62,15 +58,6 @@ class LocationDetailsFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun locationDetailsViewModel() {
-        activity?.application?.let {
-            mLocationDetailsViewModel =
-                ViewModelProvider(
-                    this
-                )[LocationDetailsViewModel::class.java]
-        }
     }
 
     private fun showLoading(show: Boolean) {

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -26,7 +26,7 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
     private val binding get() = _binding!!
 
     private val utilities = Utilities()
-    private lateinit var mLocationsViewModel: LocationsViewModel
+    private val mLocationsViewModel: LocationsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +38,6 @@ class LocationsFragment : BaseFragment(), LocationAdapter.OnLocationClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mLocationsViewModel = ViewModelProvider(this)[LocationsViewModel::class.java]
 
         val adapter = LocationAdapter(this)
 

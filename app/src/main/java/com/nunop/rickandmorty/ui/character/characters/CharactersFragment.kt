@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -31,7 +31,7 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
 
     private val utilities = Utilities()
 
-    private lateinit var mCharactersViewModel: CharactersViewModel
+    private val mCharactersViewModel: CharactersViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +43,6 @@ class CharactersFragment : BaseFragment(), CharacterAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mCharactersViewModel = ViewModelProvider(this)[CharactersViewModel::class.java]
 
         val adapter = CharacterAdapter(context, this)
         collectLoadStates(adapter)

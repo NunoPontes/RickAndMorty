@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
@@ -27,7 +27,7 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
     private val binding get() = _binding!!
 
     private val utilities = Utilities()
-    private lateinit var mEpisodesViewModel: EpisodesViewModel
+    private val mEpisodesViewModel: EpisodesViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +40,6 @@ class EpisodesFragment : BaseFragment(), EpisodeAdapter.OnEpisodeClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mEpisodesViewModel = ViewModelProvider(this)[EpisodesViewModel::class.java]
-
 
         val adapter = EpisodeAdapter(this)
 

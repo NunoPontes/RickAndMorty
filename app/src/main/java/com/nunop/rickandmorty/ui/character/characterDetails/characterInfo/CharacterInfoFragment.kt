@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.nunop.rickandmorty.base.BaseFragment
 import com.nunop.rickandmorty.data.database.entities.Character
 import com.nunop.rickandmorty.databinding.CharacterInfoFragmentBinding
@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CharacterInfoFragment : BaseFragment() {
 
-    private lateinit var mCharacterDetailsViewModel: CharacterDetailsViewModel
+    private val mCharacterDetailsViewModel: CharacterDetailsViewModel by activityViewModels()
 
     private var _binding: CharacterInfoFragmentBinding? = null
     private val binding get() = _binding!!
@@ -43,18 +43,7 @@ class CharacterInfoFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun characterDetailsViewModel() {
-        activity?.let {
-            mCharacterDetailsViewModel =
-                ViewModelProvider(
-                    it
-                )[CharacterDetailsViewModel::class.java]
-        }
-    }
-
     private fun setupViewModel() {
-        characterDetailsViewModel()
-
         mCharacterDetailsViewModel.characterLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
