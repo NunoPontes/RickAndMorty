@@ -1,12 +1,12 @@
 package com.nunop.rickandmorty.ui.location.locationDetails
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.nunop.rickandmorty.base.BaseViewModel
-import com.nunop.rickandmorty.data.database.entities.Location
 import com.nunop.rickandmorty.repository.location.LocationRepository
-import com.nunop.rickandmorty.utils.Error
+import com.nunop.rickandmorty.repository.location.LocationState
 import com.nunop.rickandmorty.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,22 +14,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LocationDetailsViewModel @Inject constructor(
-    private val repository:
-    LocationRepository
-) :
-    BaseViewModel() {
+    private val repository: LocationRepository
+) : BaseViewModel() {
 
-    private var location: MutableLiveData<Resource<Location>> = MutableLiveData()
-    var locationLiveData: LiveData<Resource<Location>> = location
+    var state by mutableStateOf(LocationState())
 
     fun getLocationById(locationId: Int) {
         viewModelScope.launch {
-            location.postValue(Resource.Loading())
-            val result = repository.getLocationById(locationId)
-            if (result != null) {
-                location.postValue(Resource.Success(result))
-            } else {
-                location.postValue(Resource.Error(Error.GENERIC.error))
+            state = state.copy(isLoading = true)
+            when (val result = repository.getLocationById(locationId)) {
+                is Resource.Success -> {
+                    state = state.copy(
+                        location = result.data,
+                        isLoading = false,
+                        error = null
+                    )
+                }
+                is Resource.Error -> {
+                    state = state.copy(
+                        isLoading = false,
+                        error = result.message,
+                        location = null
+                    )
+                }
+                else -> Unit
             }
         }
     }

@@ -6,12 +6,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.nunop.rickandmorty.data.api.models.location.ResultLocation
 import com.nunop.rickandmorty.data.database.entities.Location
-import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
 import com.nunop.rickandmorty.data.datasource.localdatasource.LocalDataSource
 import com.nunop.rickandmorty.data.datasource.remotedatasource.RemoteDataSource
-import com.nunop.rickandmorty.utils.Utilities
-import com.nunop.rickandmorty.utils.toLocation
-import com.nunop.rickandmorty.utils.toLocationCharacterCrossRefList
+import com.nunop.rickandmorty.data.paging.LocationsPagingDataSource
+import com.nunop.rickandmorty.utils.*
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -34,7 +32,7 @@ class LocationRepositoryImpl @Inject constructor(
     ).flow
 
 
-    override suspend fun getLocationById(locationId: Int): Location? {
+    override suspend fun getLocationById(locationId: Int): Resource<Location?> {
         val utilities = Utilities()
         if (context?.let { utilities.hasInternetConnection(it) } == true) {
             val response = remoteDataSource.getLocationById(locationId)
@@ -45,14 +43,23 @@ class LocationRepositoryImpl @Inject constructor(
                         it
                     )
                     localDataSource.insertAllLocationCharacterCrossRef(locationResponse.toLocationCharacterCrossRefList())
-                    return it
+                    return Resource.Success(it)
                 }
-                return null
+                return Resource.Error(Error.GENERIC.error)
             } else {
-                return localDataSource.getLocationById(locationId)
+                return getLocationFromLocalDataSource(locationId)
             }
         } else {
-            return localDataSource.getLocationById(locationId)
+            return getLocationFromLocalDataSource(locationId)
+        }
+    }
+
+    private suspend fun getLocationFromLocalDataSource(locationId: Int): Resource<Location?> {
+        val locationById = localDataSource.getLocationById(locationId)
+        return if (locationById != null) {
+            Resource.Success(locationById)
+        } else {
+            Resource.Error(Error.GENERIC.error)
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.nunop.rickandmorty.ui.location.locations
 
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -7,8 +10,8 @@ import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.activityScenarioRule
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.nunop.rickandmorty.R
@@ -19,12 +22,10 @@ import com.nunop.rickandmorty.utils.RecyclerViewItemCountAssertion
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.mockwebserver.MockWebServer
-import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 
 @ExperimentalPagingApi
@@ -33,9 +34,11 @@ import org.junit.runner.RunWith
 @HiltAndroidTest
 class LocationsFragmentUITest {
 
-    @get:Rule
-    var rule: RuleChain? =
-        RuleChain.outerRule(HiltAndroidRule(this)).around(activityScenarioRule<MainActivity>())
+    @get:Rule(order = 1)
+    var hiltTestRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 2)
+    var composeTestRule = createAndroidComposeRule<MainActivity>()
 
     private lateinit var server: MockWebServer
 
@@ -111,21 +114,13 @@ class LocationsFragmentUITest {
                 )
             )
 
-        onView(withId(R.id.tvName))
-            .check(matches(isCompletelyDisplayed()))
-            .check(matches(withText("Earth (C-137)")))
-        onView(withId(R.id.tvType))
-            .check(matches(isCompletelyDisplayed()))
-            .check(matches(withText("Planet")))
-        onView(withId(R.id.tvCreated))
-            .check(matches(isCompletelyDisplayed()))
-            .check(matches(withText("2017-11-10T12:42:04.162Z")))
-        onView(withId(R.id.tvDimension))
-            .check(matches(isCompletelyDisplayed()))
-            .check(matches(withText("Dimension C-137")))
+        composeTestRule.onNodeWithText("Earth (C-137)").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Planet").assertIsDisplayed()
+        composeTestRule.onNodeWithText("2017-11-10T12:42:04.162Z").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Dimension C-137").assertIsDisplayed()
 
-        onView(withId(R.id.lt_morty)).check(matches(Matchers.not(isCompletelyDisplayed())))
-        onView(withId(R.id.lt_generic_error)).check(matches(Matchers.not(isCompletelyDisplayed())))
+//        onView(withId(R.id.lt_morty)).check(matches(Matchers.not(isCompletelyDisplayed())))
+//        onView(withId(R.id.lt_generic_error)).check(matches(Matchers.not(isCompletelyDisplayed())))
     }
 
     private fun validateListContent(
