@@ -1,4 +1,4 @@
-package com.nunop.composetesting.ui.theme
+package com.nunop.rickandmorty.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
